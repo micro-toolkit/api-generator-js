@@ -1,0 +1,9 @@
+{
+  "properties": [ "id", "userId", "active" ],
+  "relations": [
+    {
+      "name": "user",
+      "type": "resource"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "properties": [ "id", "name" ],
+  "relations": [
+    {
+      "name": "tasks",
+      "type": "collection"
+    }
+  ]
+}
