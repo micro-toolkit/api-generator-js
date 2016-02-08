@@ -1,0 +1,22 @@
+{
+  "name": "micro-toolkit-api-generators",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test istanbul cover _mocha -- tests/* -R spec"
+  },
+  "author": "Pedro Januário <prnjanuario@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3",
+    "lodash": "^3.10.1",
+    "lodash-inflection": "^1.3.2",
+    "logger-facade-nodejs": "0.0.3",
+    "zmq-service-suite-client": "0.0.4"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.2",
+    "mocha": "^2.4.5"
+  }
+}
