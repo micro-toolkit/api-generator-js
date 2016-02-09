@@ -11,5 +11,6 @@
   "maxlen": 80,
   "eqnull": true,
   "funcscope": true,
-  "node": true
+  "node": true,
+  "unused": true
 }
