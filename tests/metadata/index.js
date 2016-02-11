@@ -1,16 +1,13 @@
-var fs = require('fs');
+var _ = require('lodash'),
+    metadataLoader = require('../../lib/metadata');
 
-/**
-* This is a clever convenience for accessing our custom metadata.
-* In your app, you can just do something like:
-*
-*     var metadata = require('./metadata/index');
-*     var v1Metadata = metadata.v1;
-*
-* Inspired by the way Express/Connect loads middleware.
-*/
-fs.readdirSync(__dirname).forEach(function(filename) {
-  if (filename === 'index.js') { return; }
-  function load(){ return require('./' + filename + '/index'); }
-  exports.__defineGetter__(filename, load);
-});
+var version = 'v1';
+function load(){
+  var metadataIndex = require('./' + version + '/index');
+  metadataIndex = _.inject(metadataIndex, function(memo, value, key){
+    memo[key] = metadataLoader(version, key, value);
+    return memo;
+  }, {});
+  return metadataIndex;
+}
+exports.__defineGetter__(version, load);
