@@ -10,7 +10,7 @@ describe('model', function(){
       runtimeConfig: { baseUrl: 'http://test' },
       metadata: metadata
     };
-    target = require('../lib/model')(config, metadata.user);
+    target = require('../lib/model')(config, metadata.v1.user);
   });
 
   it('should set model properties', function(){
@@ -32,20 +32,20 @@ describe('model', function(){
     it('should set self link', function(){
       var actual = target({ id: '1', name: 'Peter'});
       actual.should.have.property('_links');
-      actual._links.should.have.property('self', 'http://test/users/1');
+      actual._links.should.have.property('self', 'http://test/v1/users/1');
     });
 
     it('should set resource relation link', function(){
-      target = require('../lib/model')(config, metadata.task);
+      target = require('../lib/model')(config, metadata.v1.task);
       var actual = target({ id: '2', userId: '1' });
       actual.should.have.property('_links');
-      actual._links.should.have.property('user', 'http://test/users/1');
+      actual._links.should.have.property('user', 'http://test/v1/users/1');
     });
 
     it('should set collection relation link', function(){
       var actual = target({ id: '1', name: 'Peter'});
       actual.should.have.property('_links');
-      actual._links.should.have.property('tasks', 'http://test/users/1/tasks');
+      actual._links.should.have.property('tasks', 'http://test/v1/users/1/tasks');
     });
   });
 });
