@@ -1,0 +1,19 @@
+sudo: false
+language: node_js
+services:
+node_js:
+  - 0.10
+  - 0.12
+  - 4
+  - 5
+before_script:
+  - npm install -d
+branches:
+  only:
+    - master
+script:
+  - npm test
+addons:
+  apt:
+    packages:
+      - libzmq3-dev
