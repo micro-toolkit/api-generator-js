@@ -25,6 +25,7 @@
     "q": "^1.4.1",
     "sinon": "^1.17.2",
     "sinon-as-promised": "^4.0.0",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "supertest": "^1.2.0"
   }
 }

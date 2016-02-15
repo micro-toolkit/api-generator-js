@@ -1,0 +1,8 @@
+{
+  "id": "pjanuario",
+  "name": "Pedro",
+  "_links": {
+    "self": "/users/pjanuario",
+    "tasks": "/users/pjanuario/tasks"
+  }
+}

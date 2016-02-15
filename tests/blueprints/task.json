@@ -1,0 +1,9 @@
+{
+  "id": "1",
+  "active": true,
+  "userId": "pjanuario",
+  "_links": {
+    "self": "/tasks/1",
+    "user": "/users/pjanuario"
+  }
+}
