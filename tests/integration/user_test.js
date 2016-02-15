@@ -48,8 +48,9 @@ describe('Integration: User Endpoints', function(){
 
     it('return a model resource', function(done){
       var stub = sinon.stub().resolves(stubs.user);
-      // TODO: check syntax for arg id
-      sinon.stub(clientStub, 'get').returns(stub());
+      sinon.stub(clientStub, 'get')
+        .withArgs('pjanuario')
+        .returns(stub());
 
       request(app)
         .get('/v1/users/pjanuario')
