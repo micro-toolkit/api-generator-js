@@ -96,3 +96,33 @@ var router = apiRouter(config);
 app.use(router);
 app.listen(8081);
 ```
+
+
+## Forwarding claims to service
+
+The api generators allow to forward request claims into the microservice using the microservice header property on call. The api generator will use `req.user` to whitelist the claims selected. To use this feature the application just need to use a middleware to set `req.user` and define the whitelisted properties using the following configuration.
+
+```javascript
+var express = require('express');
+var apiRouter = require('../../index');
+
+var config = {
+  runtimeConfig: {
+    baseUrl: 'http://localhost:8081',
+    claims: 'userId,tenantId'
+  },
+  // metadata from api-example project
+  metadata: metadata
+};
+var app = express();
+var router = apiRouter(config);
+// emulate auth middlware
+app.use(function(req, res, next){
+  var claims = { userId: '1', tenantId: '2' };
+  req.user = claims;
+  next();
+});
+app.use(router);
+app.listen(8081);
+
+```
