@@ -39,26 +39,26 @@ describe('Handlers Generators', function(){
 
   describe('#collection', function(){
     afterEach(function(){
-      clientStub.all.restore();
+      clientStub.list.restore();
     });
 
-    it('should call micro client all action', function(){
+    it('should call micro client list action', function(){
       var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       target.collection(metadata.v1.task)(req, res);
       actionStub.should.have.been.called;
     });
 
     it('should call micro client with limit and offset defaults', function(){
       var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       target.collection(metadata.v1.task)(req, res);
       actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
     });
 
     it('should call micro client with request limit and offset', function(){
       var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       req.query.limit = 2;
       req.query.offset = 1;
       target.collection(metadata.v1.task)(req, res);
@@ -67,7 +67,7 @@ describe('Handlers Generators', function(){
 
     it('should call micro client with request query string data', function(){
       var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       req.query.unread = true;
       target.collection(metadata.v1.task)(req, res);
       actionStub.should.have.been.calledWith({
@@ -79,7 +79,7 @@ describe('Handlers Generators', function(){
       var task = { id: '1', userId: '99', active: true };
       var model = Model(config, metadata.v1.task)(task);
       var stub = sinon.stub().resolves([task]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       // TODO: this isnt working with spy.should.have.been.called
       res.json = function(data){
         data.should.be.deep.equal([model]);
@@ -91,7 +91,7 @@ describe('Handlers Generators', function(){
     describe('excluding query string parameters from payload', function(){
       it('should call micro client without token', function(){
         var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         req.query.token = 'secretToken';
         target.collection(metadata.v1.task)(req, res);
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
@@ -102,7 +102,7 @@ describe('Handlers Generators', function(){
         config.runtimeConfig.excludeQueryString = 'other';
         target = require('../lib/handlers')(config);
         var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         req.query.other = 'other';
         target.collection(metadata.v1.task)(req, res);
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
@@ -117,7 +117,7 @@ describe('Handlers Generators', function(){
 
       it('should call micro client with claims on headers', function(){
         var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         req.user = { userId: '1', tenantId: '1' };
         target.collection(metadata.v1.task)(req, res);
         actionStub.should.have.been.calledWith(
@@ -129,7 +129,7 @@ describe('Handlers Generators', function(){
     describe('on micro client error', function(){
       it('should set status with error code', function(done){
         var stub = sinon.stub().rejects({ code: 500, body: 'error' });
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
         res.status = function(code){
           code.should.be.equal(500);
@@ -142,7 +142,7 @@ describe('Handlers Generators', function(){
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(done){
         var stub = sinon.stub().rejects({ code: 500, body: 'error payload' });
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
         jsonStub = function(){ done(); }
         res = {
@@ -487,19 +487,19 @@ describe('Handlers Generators', function(){
 
   describe('#resourceRelation', function(){
     afterEach(function(){
-      clientStub.all.restore();
+      clientStub.list.restore();
     });
 
-    it('should call micro client all action', function(){
+    it('should call micro client list action', function(){
       var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       target.resourceRelation(metadata.v1.user.relations[0])(req, res);
       actionStub.should.have.been.called;
     });
 
     it('should call micro client with resource foreign key', function(){
       var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       req.params.id = '1';
       target.resourceRelation(metadata.v1.user.relations[0])(req, res);
       actionStub.should.have.been.calledWith(sinon.match({ userId: '1' }));
@@ -507,14 +507,14 @@ describe('Handlers Generators', function(){
 
     it('should call micro client with limit and offset defaults', function(){
       var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       target.resourceRelation(metadata.v1.user.relations[0])(req, res);
       actionStub.should.have.been.calledWith(sinon.match({ limit: 10, offset: 0 }));
     });
 
     it('should call micro client with request limit and offset', function(){
       var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       req.query.limit = 2;
       req.query.offset = 1;
       target.resourceRelation(metadata.v1.user.relations[0])(req, res);
@@ -524,7 +524,7 @@ describe('Handlers Generators', function(){
 
     it('should call micro client with request query string data', function(){
       var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       req.query.unread = true;
       target.resourceRelation(metadata.v1.user.relations[0])(req, res);
       actionStub.should.have.been.calledWith(sinon.match({ unread: true }));
@@ -534,7 +534,7 @@ describe('Handlers Generators', function(){
       var task = { id: '1', userId: '99', active: true };
       var model = Model(config, metadata.v1.task)(task);
       var stub = sinon.stub().resolves([task]);
-      var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
       // TODO: this isnt working with spy.should.have.been.called
       res.json = function(data){
         data.should.be.deep.equal([model]);
@@ -546,7 +546,7 @@ describe('Handlers Generators', function(){
     describe('excluding query string parameters from payload', function(){
       it('should call micro client without token', function(){
         var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         req.query.token = 'secretToken';
         target.collection(metadata.v1.task)(req, res);
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
@@ -557,7 +557,7 @@ describe('Handlers Generators', function(){
         config.runtimeConfig.excludeQueryString = 'other';
         target = require('../lib/handlers')(config);
         var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         req.query.other = 'other';
         target.collection(metadata.v1.task)(req, res);
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
@@ -572,7 +572,7 @@ describe('Handlers Generators', function(){
 
       it('should call micro client with claims on headers', function(){
         var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         req.user = { userId: '1', tenantId: '1' };
         target.resourceRelation(metadata.v1.user.relations[0])(req, res);
         actionStub.should.have.been.calledWith(
@@ -584,7 +584,7 @@ describe('Handlers Generators', function(){
     describe('on micro client error', function(){
       it('should set status with error code', function(done){
         var stub = sinon.stub().rejects({ code: 500, body: 'error' });
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
         res.status = function(code){
           code.should.be.equal(500);
@@ -597,7 +597,7 @@ describe('Handlers Generators', function(){
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(done){
         var stub = sinon.stub().rejects({ code: 500, body: 'error payload' });
-        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
         jsonStub = function(){ done(); }
         res = {

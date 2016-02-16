@@ -16,7 +16,7 @@ Property    | Description
 ------------|------------
 properties  | A whitelist of properties associated with the model, only this properties are returned by the api serialization.
 relations   | A collection of relations associated with the model.
-actions     | A list of actions available on the model (all, get, create, remove, update).
+actions     | A list of actions available on the model (list, get, create, remove, update).
 
 ```javascript
 var taskMetadata = {

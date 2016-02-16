@@ -36,12 +36,12 @@ describe('Integration: Tasks Endpoints', function(){
 
   describe('GET /v1/tasks', function(){
     afterEach(function(){
-      clientStub.all.restore();
+      clientStub.list.restore();
     });
 
     it('return a collection', function(done){
       var stub = sinon.stub().resolves([stubs.task]);
-      sinon.stub(clientStub, 'all').returns(stub());
+      sinon.stub(clientStub, 'list').returns(stub());
 
       request(app)
         .get('/v1/tasks')
@@ -74,12 +74,12 @@ describe('Integration: Tasks Endpoints', function(){
 
   describe('GET /v1/users/1/tasks', function(){
     afterEach(function(){
-      clientStub.all.restore();
+      clientStub.list.restore();
     });
 
     it('return a collection', function(done){
       var stub = sinon.stub().resolves([stubs.task]);
-      sinon.stub(clientStub, 'all')
+      sinon.stub(clientStub, 'list')
         .withArgs(sinon.match({ userId: '1' }))
         .returns(stub());
 
