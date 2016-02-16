@@ -88,6 +88,27 @@ describe('Handlers Generators', function(){
       target.collection(metadata.v1.task)(req, res);
     });
 
+    describe('excluding query string parameters from payload', function(){
+      it('should call micro client without token', function(){
+        var stub = sinon.stub().resolves([]);
+        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        req.query.token = 'secretToken';
+        target.collection(metadata.v1.task)(req, res);
+        actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
+      });
+
+      it('should call micro client without excluded query string params',
+      function(){
+        config.runtimeConfig.excludeQueryString = 'other';
+        target = require('../lib/handlers')(config);
+        var stub = sinon.stub().resolves([]);
+        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        req.query.other = 'other';
+        target.collection(metadata.v1.task)(req, res);
+        actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
+      });
+    });
+
     describe('forwarding claims when configured', function(){
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
@@ -520,6 +541,27 @@ describe('Handlers Generators', function(){
         done();
       }
       target.resourceRelation(metadata.v1.user.relations[0])(req, res);
+    });
+
+    describe('excluding query string parameters from payload', function(){
+      it('should call micro client without token', function(){
+        var stub = sinon.stub().resolves([]);
+        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        req.query.token = 'secretToken';
+        target.collection(metadata.v1.task)(req, res);
+        actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
+      });
+
+      it('should call micro client without excluded query string params',
+      function(){
+        config.runtimeConfig.excludeQueryString = 'other';
+        target = require('../lib/handlers')(config);
+        var stub = sinon.stub().resolves([]);
+        var actionStub = sinon.stub(clientStub, 'all').returns(stub());
+        req.query.other = 'other';
+        target.collection(metadata.v1.task)(req, res);
+        actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
+      });
     });
 
     describe('forwarding claims when configured', function(){
