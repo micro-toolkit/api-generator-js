@@ -11,7 +11,7 @@ function init(){
   var clientStub = {
     call: nop,
     get: nop,
-    all: nop,
+    list: nop,
     create: nop,
     update: nop,
     remove: nop
