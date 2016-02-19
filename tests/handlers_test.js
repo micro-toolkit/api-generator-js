@@ -3,6 +3,7 @@ var chai = require('chai'),
     sinon = require("sinon"),
     sinonChai = require("sinon-chai"),
     clientHelper = require('./support/client_helper'),
+    stubs = require('./stubs/index'),
     Model = require('../lib/model');
 
 chai.should();
@@ -634,6 +635,113 @@ describe('Handlers Generators', function(){
           status: function(){ return jsonStub; }
         };
         target.resourceRelation(metadata.v1.user.relations[0])(req, res);
+      });
+    });
+  });
+
+  describe('#nonStandardAction', function () {
+    beforeEach(function () {
+      req.params.id = '1';
+    });
+    afterEach(function(){
+      clientStub.call.restore();
+    });
+
+    it('should call micro client activate action', function(){
+      var stub = sinon.stub().resolves();
+      var actionStub = sinon.stub(clientStub, 'call')
+        .withArgs('activate', {id:'1'})
+        .returns(stub());
+
+      var action = metadata.v1.user.actions[1];
+      target.nonStandardAction(metadata.v1.user, action)(req, res);
+      actionStub.should.have.been.called;
+    });
+
+    it('should set json response on successfull call', function(done){
+      var model = Model(config, metadata.v1.user)(stubs.user);
+      var stub = sinon.stub().resolves(stubs.user);
+      var actionStub = sinon.stub(clientStub, 'call')
+        .withArgs('activate', {id:'1'})
+        .returns(stub());
+
+      // TODO: this isnt working with spy.should.have.been.called
+      res.json = function(data){
+        data.should.be.deep.equal(model);
+        done();
+      };
+      var action = metadata.v1.user.actions[1];
+      target.nonStandardAction(metadata.v1.user, action)(req, res);
+    });
+
+    it('should set a empty json response on delete call', function(done){
+      var stub = sinon.stub().resolves();
+      var actionStub = sinon.stub(clientStub, 'call')
+        .withArgs('deactivate', {id:'1'})
+        .returns(stub());
+
+      // TODO: this isnt working with spy.should.have.been.called
+      res.json = function(data){
+        should.not.exist(data);
+        done();
+      };
+      var action = metadata.v1.user.actions[2];
+      target.nonStandardAction(metadata.v1.user, action)(req, res);
+    });
+
+    describe('forwarding claims when configured', function(){
+      beforeEach(function(){
+        config.runtimeConfig.claims = 'userId,tenantId';
+        target = require('../lib/handlers')(config);
+      });
+
+      it('should call micro client with claims on headers', function(){
+        req.user = { userId: '1', tenantId: '1' };
+        var stub = sinon.stub().resolves();
+        var actionStub = sinon.stub(clientStub, 'call')
+          .withArgs('activate')
+          .returns(stub());
+
+        var action = metadata.v1.user.actions[1];
+        target.nonStandardAction(metadata.v1.user, action)(req, res);
+        actionStub.should.have.been.calledWith(
+          sinon.match.any, sinon.match.any,
+          { userId: '1', tenantId: '1' }
+        );
+      });
+    });
+
+    describe('on micro client error', function(){
+      it('should set status with error code', function(done){
+        var stub = sinon.stub().rejects({ code: 500 });
+        var actionStub = sinon.stub(clientStub, 'call')
+          .withArgs('activate')
+          .returns(stub());
+
+        res.status = function(code){
+          code.should.be.equal(500);
+          done();
+        }
+        var action = metadata.v1.user.actions[1];
+        target.nonStandardAction(metadata.v1.user, action)(req, res);
+      });
+
+      // TODO: this isnt working properly with spy.should.have.been.called
+      // a bug will be open to fix this, need to proceed for now
+      xit('should set json response error body', function(){
+        var error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+        var stub = sinon.stub().rejects(error);
+        var actionStub = sinon.stub(clientStub, 'call')
+          .withArgs('activate')
+          .returns(stub());
+        var spy = res.json;
+        var action = metadata.v1.user.actions[1];
+        target.nonStandardAction(metadata.v1.user, action)(req, res);
+        spy.should.have.been.calledWith(error);
       });
     });
   });

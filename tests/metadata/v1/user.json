@@ -1,10 +1,14 @@
 {
-  "properties": [ "id", "name" ],
+  "properties": [ "id", "name", "active" ],
   "relations": [
     {
       "name": "tasks",
       "type": "collection"
     }
   ],
-  "actions": ["get"]
+  "actions": [
+    "get",
+    { "name": "active", "httpVerb": "PUT", "verb": "activate" },
+    { "name": "active", "httpVerb": "DELETE", "verb": "deactivate" }
+  ]
 }
