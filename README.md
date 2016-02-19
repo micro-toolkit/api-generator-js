@@ -140,3 +140,19 @@ var config = {
   metadata: metadata
 };
 ```
+
+## Bump versioning
+
+We use [grunt bump package](https://www.npmjs.org/package/grunt-bump) to control package versioning.
+
+Bump Patch version
+
+    $ grunt bump
+
+Bump Minor version
+
+    $ grunt bump:minor
+
+Bump Major version
+
+    $ grunt bump:major
