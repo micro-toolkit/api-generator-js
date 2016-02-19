@@ -164,3 +164,16 @@ Bump Minor version
 Bump Major version
 
     $ grunt bump:major
+
+## Running Specs
+
+    $ npm test
+
+## Coverage Report
+
+We aim for 100% coverage and we hope it keeps that way! :)
+We use pre-commit and pre-push hooks and CI to accomplish this, so don't mess with our build! :P
+
+Check the report after running npm test.
+
+    $ open ./coverage/lcov-report/index.html
