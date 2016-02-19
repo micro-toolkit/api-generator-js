@@ -88,4 +88,43 @@ describe('Integration: User Endpoints', function(){
     });
   });
 
+  describe('PUT /v1/users/:id/active', function(){
+    afterEach(function(){
+      clientStub.call.restore();
+    });
+
+    it('return a model resource', function(done){
+      var stub = sinon.stub().resolves(stubs.user);
+      sinon.stub(clientStub, 'call')
+        .withArgs('activate', {id:'pjanuario'})
+        .returns(stub());
+
+      request(app)
+        .put('/v1/users/pjanuario/active')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect(blueprints.user)
+        .end(done);
+    });
+  });
+
+  describe('DELETE /v1/users/:id/active', function(){
+    afterEach(function(){
+      clientStub.call.restore();
+    });
+
+    it('return a model resource', function(done){
+      var stub = sinon.stub().resolves();
+      sinon.stub(clientStub, 'call')
+        .withArgs('deactivate', {id:'pjanuario'})
+        .returns(stub());
+
+      request(app)
+        .delete('/v1/users/pjanuario/active')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end(done);
+    });
+  });
+
 });

@@ -1,6 +1,7 @@
 {
   "id": "pjanuario",
   "name": "Pedro",
+  "active": true,
   "_links": {
     "self": "/users/pjanuario",
     "tasks": "/users/pjanuario/tasks"
