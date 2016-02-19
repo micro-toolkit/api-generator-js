@@ -33,4 +33,12 @@ describe('paths', function(){
     });
   });
 
+  describe('#nonStandardAction', function(){
+    it('should return a non standard action path', function(){
+      var action = metadata.v1.user.actions[1];
+      target.nonStandardAction(metadata.v1.user, action)
+        .should.be.eql('/v1/users/:id/active');
+    });
+  });
+
 });
