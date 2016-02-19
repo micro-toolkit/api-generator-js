@@ -141,7 +141,12 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(done){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error payload' });
+        var error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
         jsonStub = function(){ done(); }
@@ -222,7 +227,12 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error payload' });
+        var error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'get').returns(stub());
         var spy = res.json;
         target.getResource(metadata.v1.task)(req, res);
@@ -308,7 +318,12 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error payload' });
+        var error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'create').returns(stub());
         var spy = res.json;
         target.createResource(metadata.v1.task)(req, res);
@@ -408,7 +423,12 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error payload' });
+        var error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'update').returns(stub());
         var spy = res.json;
         target.updateResource(metadata.v1.task)(req, res);
@@ -476,7 +496,12 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error payload' });
+        var error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
         var spy = res.json;
         target.removeResource(metadata.v1.task)(req, res);
@@ -596,7 +621,12 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(done){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error payload' });
+        var error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
         jsonStub = function(){ done(); }
