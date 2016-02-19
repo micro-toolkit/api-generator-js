@@ -1,3 +1,9 @@
+var chai = require('chai'),
+    should = chai.should,
+    expect = chai.expect;
+
+chai.should();
+
 describe('metadata', function(){
   var target, metadata;
 
@@ -20,6 +26,45 @@ describe('metadata', function(){
 
     it('should set relations to empty array when unexistent', function(){
       target('v1', 'task', {}).relations.should.deep.equal([]);
+    });
+
+    describe('with invalid action', function () {
+      var action;
+      beforeEach(function () {
+        action = { httpVerb: 'put', name: 'active', verb: 'activate' };
+      });
+
+      it('should throw a error on invalid http verb', function () {
+        action.httpVerb = 'invalid';
+        var metadata = {actions: [action] };
+        expect(function(){
+          target('v1', 'task', metadata)
+        }).to.throw(Error, /is invalid due to httpVerb/);
+      });
+
+      it('should throw a error on empty http verb', function () {
+        action.httpVerb = '';
+        var metadata = {actions: [action] };
+        expect(function(){
+          target('v1', 'task', metadata)
+        }).to.throw(Error, /is invalid due to httpVerb/);
+      });
+
+      it('should throw a error on invalid name', function () {
+        action.name = '';
+        var metadata = {actions: [action] };
+        expect(function(){
+          target('v1', 'task', metadata)
+        }).to.throw(Error, /is invalid due to name/);
+      });
+
+      it('should throw a error on invalid verb', function () {
+        action.verb = '';
+        var metadata = {actions: [action] };
+        expect(function(){
+          target('v1', 'task', metadata)
+        }).to.throw(Error, /is invalid due to verb/);
+      });
     });
 
     describe('on loading relation', function(){
