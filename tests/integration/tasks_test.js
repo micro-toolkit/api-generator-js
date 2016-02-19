@@ -50,6 +50,23 @@ describe('Integration: Tasks Endpoints', function(){
         .expect([blueprints.task])
         .end(done);
     });
+
+    it('returns a error', function (done) {
+      var error = {
+        code: 500,
+        userMessage: 'user message',
+        developerMessage: 'dev message'
+      };
+      var stub = sinon.stub().rejects(error);
+      sinon.stub(clientStub, 'list').returns(stub());
+
+      request(app)
+        .get('/v1/tasks')
+        .expect(500)
+        .expect('Content-Type', /json/)
+        .expect(error)
+        .end(done);
+    });
   });
 
   describe('GET /v1/tasks/:id', function(){
