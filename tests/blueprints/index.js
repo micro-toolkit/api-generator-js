@@ -20,7 +20,7 @@ fs.readdirSync(__dirname).forEach(function(filename) {
   var model = path.basename(filename, '.json');
   function load(){
     var blueprint = _.cloneDeep(require('./' + model));
-    blueprint._links = _.inject(blueprint._links, function(memo, value, key){
+    blueprint._links = _.reduce(blueprint._links, function(memo, value, key){
       // TODO: introcude placeholder replacement on links
       memo[key] = link(value);
       return memo;
