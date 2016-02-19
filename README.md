@@ -141,6 +141,44 @@ var config = {
 };
 ```
 
+## Support non standard actions
+
+The default supported actions are `list, get, create, remove, update`, but the toolkit also support non standard action over a resource.
+
+See following metadata example:
+
+```javascript
+// metadata from api-example project
+var metadata = {
+  v1: {
+    user: {
+      properties: [ "id", "name", "active" ],
+      relations: [
+        {
+          name: "tasks",
+          type: "collection"
+        }
+      ],
+      actions: [
+        "get",
+        { name: "active", httpVerb: "PUT", verb: "activate" },
+        { name: "active", httpVerb: "DELETE", verb: "deactivate" }
+      ]
+    }
+
+  }
+};
+```
+
+The previous metadata will generate the following routes:
+
+* `PUT /v1/users/:id/active` - that will call verb `activate` on the service, this operation should return the user model serialization
+* `DELETE /v1/users/:id/active` - that will call verb `deactivate` on the service, this operation will not return any response body from the api
+
+**NOTE**
+
+At the moment the only support http verbs are: `PUT, POST, DELETE`. The `PUT, POST` verbs should return the model serialization.
+
 ## Contributing
 
 1. Fork it
