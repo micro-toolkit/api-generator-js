@@ -77,7 +77,7 @@ describe('Integration: Tasks Endpoints', function(){
     it('return a model resource', function(done){
       var stub = sinon.stub().resolves(stubs.task);
       sinon.stub(clientStub, 'get')
-        .withArgs('1')
+        .withArgs({id:'1'})
         .returns(stub());
 
       request(app)

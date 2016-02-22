@@ -1,0 +1,9 @@
+{
+  "id": "1",
+  "userId": "pjanuario",
+  "name": "Admin",
+  "_links": {
+    "self": "/users/pjanuario/roles/1",
+    "user": "/users/pjanuario"
+  }
+}

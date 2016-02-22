@@ -12,7 +12,7 @@ chai.should();
 chai.use(sinonChai);
 
 describe('Integration: User Endpoints', function(){
-  var app, clientStub;
+  var app, clientStub, server;
 
   before(function(){
     clientStub = clientHelper.init();
@@ -24,12 +24,14 @@ describe('Integration: User Endpoints', function(){
     app = express();
     var router = apiRouter(config);
     app.use(router);
-    app.listen(8089);
+    server = app.listen(8089);
   });
 
   after(function(){
     clientHelper.restore();
     clientStub = null;
+    server.close();
+    server = null;
   });
 
   describe('GET /v1/users', function(){
@@ -49,7 +51,7 @@ describe('Integration: User Endpoints', function(){
     it('return a model resource', function(done){
       var stub = sinon.stub().resolves(stubs.user);
       sinon.stub(clientStub, 'get')
-        .withArgs('pjanuario')
+        .withArgs({id:'pjanuario'})
         .returns(stub());
 
       request(app)

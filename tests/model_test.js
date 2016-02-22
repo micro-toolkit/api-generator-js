@@ -47,5 +47,23 @@ describe('model', function(){
       actual.should.have.property('_links');
       actual._links.should.have.property('tasks', 'http://test/v1/users/1/tasks');
     });
+
+    describe('for subresource models', function(){
+      beforeEach(function () {
+        target = require('../lib/model')(config, metadata.v1.role);
+      });
+
+      it('should set self link', function(){
+        var actual = target({ id: '1', name: 'Admin', userId: 'pjanuario'});
+        actual.should.have.property('_links');
+        actual._links.should.have.property('self', 'http://test/v1/users/pjanuario/roles/1');
+      });
+
+      it('should set resource relation link', function(){
+        var actual = target({ id: '1', name: 'Admin', userId: 'pjanuario'});
+        actual.should.have.property('_links');
+        actual._links.should.have.property('user', 'http://test/v1/users/pjanuario');
+      });
+    });
   });
 });

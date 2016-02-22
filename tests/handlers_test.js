@@ -182,7 +182,7 @@ describe('Handlers Generators', function(){
       var actionStub = sinon.stub(clientStub, 'get').returns(stub());
       req.params.id = '1';
       target.getResource(metadata.v1.task)(req, res);
-      actionStub.should.have.been.calledWith('1');
+      actionStub.should.have.been.calledWith({id:'1'});
     });
 
     it('should set json response on successfull call', function(done){
@@ -455,7 +455,7 @@ describe('Handlers Generators', function(){
       var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
       req.params.id = '1';
       target.removeResource(metadata.v1.task)(req, res);
-      actionStub.should.have.been.calledWith('1');
+      actionStub.should.have.been.calledWith({id:'1'});
     });
 
     it('should call json response on successfull call', function(done){

@@ -1,0 +1,11 @@
+{
+  "parent": "user",
+  "properties": [ "id", "name", "userId"],
+  "actions": ["list", "get"],
+  "relations": [
+    {
+      "name": "user",
+      "type": "resource"
+    }
+  ]
+}
