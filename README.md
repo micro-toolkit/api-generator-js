@@ -179,6 +179,42 @@ The previous metadata will generate the following routes:
 
 At the moment the only support http verbs are: `PUT, POST, DELETE`. The `PUT, POST` verbs should return the model serialization.
 
+## Support subresource models
+
+If we have a model that is dependent on a parent model, we can configure it in the model. This configuration will make the api routes being dependent on the parent resource routes.
+
+As an example we can have the following model configuration (metadata from api-example project):
+
+```json
+{
+  "parent": "user",
+  "properties": [ "id", "name", "userId"],
+  "actions": ["list", "get", "create", "update", "remove"],
+  "relations": [
+    {
+      "name": "user",
+      "type": "resource"
+    }
+  ]
+}
+```
+
+This will generate the following routes:
+
+    API::METADATA::INFO - Loaded API Models...
+    API::METADATA::INFO - Loading API routes...
+    API::METADATA::INFO - Mount route GET     /v1/users/:userId/roles
+    API::METADATA::INFO - Mount route GET     /v1/users/:userId/roles/:id
+    API::METADATA::INFO - Mount route POST    /v1/users/:userId/roles
+    API::METADATA::INFO - Mount route PUT     /v1/users/:userId/roles/:id
+    API::METADATA::INFO - Mount route DELETE  /v1/users/:userId/roles/:id
+    ...
+    API::METADATA::INFO - Loaded API routes...
+    API::INFO - Server running on port 8081
+
+The parameters `userId` and ìd`(on resource endpoints only) will be sent to service on payload.
+
+
 ## Contributing
 
 1. Fork it
