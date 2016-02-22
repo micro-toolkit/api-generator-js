@@ -49,7 +49,7 @@ describe('Integration: User Endpoints', function(){
     it('return a model resource', function(done){
       var stub = sinon.stub().resolves(stubs.user);
       sinon.stub(clientStub, 'get')
-        .withArgs('pjanuario')
+        .withArgs({id:'pjanuario'})
         .returns(stub());
 
       request(app)
