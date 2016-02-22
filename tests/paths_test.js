@@ -41,4 +41,16 @@ describe('paths', function(){
     });
   });
 
+  describe('with parent relation', function () {
+    it('should return a pluralized parent collection path', function(){
+      target.collection(metadata.v1.role)
+        .should.be.eql('/v1/users/:userId/roles');
+    });
+
+    it('should return a resource path', function(){
+      target.resource(metadata.v1.role)
+        .should.be.eql('/v1/users/:userId/roles/:id');
+    });
+  });
+
 });
