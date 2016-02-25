@@ -139,9 +139,18 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      var error;
+
+      beforeEach(function () {
+        error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+      });
 
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error' });
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
         res.status = function(code){
@@ -154,11 +163,6 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(done){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
@@ -170,11 +174,6 @@ describe('Handlers Generators', function(){
       });
 
       it('should execute next handler', function(done){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         // TODO: use sinon chai and spy
@@ -249,8 +248,18 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      var error;
+
+      beforeEach(function () {
+        error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error' });
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'get').returns(stub());
         res.status = function(code){
           code.should.be.equal(500);
@@ -262,11 +271,6 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'get').returns(stub());
         var spy = res.json;
@@ -275,11 +279,6 @@ describe('Handlers Generators', function(){
       });
 
       it('should execute next handler', function(done){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'get').returns(stub());
         // TODO: use sinon chai and spy
@@ -362,8 +361,18 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      var error;
+
+      beforeEach(function () {
+        error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error' });
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'create').returns(stub());
         res.status = function(code){
           code.should.be.equal(500);
@@ -375,11 +384,6 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'create').returns(stub());
         var spy = res.json;
@@ -388,11 +392,6 @@ describe('Handlers Generators', function(){
       });
 
       it('should execute next handler', function(done){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'create').returns(stub());
         // TODO: use sinon chai and spy
@@ -489,8 +488,18 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      var error;
+
+      beforeEach(function () {
+        error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error' });
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'update').returns(stub());
         res.status = function(code){
           code.should.be.equal(500);
@@ -502,11 +511,6 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'update').returns(stub());
         var spy = res.json;
@@ -515,11 +519,6 @@ describe('Handlers Generators', function(){
       });
 
       it('should execute next handler', function(done){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'update').returns(stub());
         // TODO: use sinon chai and spy
@@ -583,8 +582,18 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      var error;
+
+      beforeEach(function () {
+        error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error' });
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
         res.status = function(code){
           code.should.be.equal(500);
@@ -596,11 +605,6 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
         var spy = res.json;
@@ -609,11 +613,6 @@ describe('Handlers Generators', function(){
       });
 
       it('should execute next handler', function(done){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
         // TODO: use sinon chai and spy
@@ -730,8 +729,18 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      var error;
+
+      beforeEach(function () {
+        error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects({ code: 500, body: 'error' });
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
         res.status = function(code){
@@ -744,11 +753,6 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(done){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
 
@@ -760,11 +764,6 @@ describe('Handlers Generators', function(){
       });
 
       it('should execute next handler', function(done){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         // TODO: use sinon chai and spy
@@ -859,8 +858,18 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      var error;
+
+      beforeEach(function () {
+        error = {
+          code: 500,
+          userMessage: 'user message',
+          developerMessage: 'dev message'
+        };
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects({ code: 500 });
+        var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'call')
           .withArgs('activate')
           .returns(stub());
@@ -876,11 +885,6 @@ describe('Handlers Generators', function(){
       // TODO: this isnt working properly with spy.should.have.been.called
       // a bug will be open to fix this, need to proceed for now
       xit('should set json response error body', function(){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'call')
           .withArgs('activate')
@@ -892,11 +896,6 @@ describe('Handlers Generators', function(){
       });
 
       it('should execute next handler', function(done){
-        var error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'call')
           .withArgs('activate')
