@@ -12,7 +12,7 @@ chai.use(sinonChai);
 var nop = function(){ return function(){}; };
 
 describe('Handlers Generators', function(){
-  var target, config, metadata, clientStub, req, res, actionStub, next;
+  var target, config, metadata, clientStub, req, res, actionStub, next, error;
 
   before(function(){
     clientStub = clientHelper.init();
@@ -37,6 +37,11 @@ describe('Handlers Generators', function(){
     };
     res.status.returns(res);
     next = nop;
+    error = {
+      code: 500,
+      userMessage: 'user message',
+      developerMessage: 'dev message'
+    };
   });
 
   describe('#collection', function(){
@@ -139,16 +144,6 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      var error;
-
-      beforeEach(function () {
-        error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
-      });
-
       it('should set status with error code', function(done){
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
@@ -248,16 +243,6 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      var error;
-
-      beforeEach(function () {
-        error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
-      });
-
       it('should set status with error code', function(done){
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'get').returns(stub());
@@ -361,16 +346,6 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      var error;
-
-      beforeEach(function () {
-        error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
-      });
-
       it('should set status with error code', function(done){
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'create').returns(stub());
@@ -488,16 +463,6 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      var error;
-
-      beforeEach(function () {
-        error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
-      });
-
       it('should set status with error code', function(done){
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'update').returns(stub());
@@ -582,16 +547,6 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      var error;
-
-      beforeEach(function () {
-        error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
-      });
-
       it('should set status with error code', function(done){
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
@@ -729,16 +684,6 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      var error;
-
-      beforeEach(function () {
-        error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
-      });
-
       it('should set status with error code', function(done){
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'list').returns(stub());
@@ -858,16 +803,6 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      var error;
-
-      beforeEach(function () {
-        error = {
-          code: 500,
-          userMessage: 'user message',
-          developerMessage: 'dev message'
-        };
-      });
-
       it('should set status with error code', function(done){
         var stub = sinon.stub().rejects(error);
         var actionStub = sinon.stub(clientStub, 'call')
