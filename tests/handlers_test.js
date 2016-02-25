@@ -4,12 +4,11 @@ var chai = require('chai'),
     sinonChai = require("sinon-chai"),
     clientHelper = require('./support/client_helper'),
     stubs = require('./stubs/index'),
-    Model = require('../lib/model');
+    Model = require('../lib/model'),
+    _ = require('lodash');
 
 chai.should();
 chai.use(sinonChai);
-
-var nop = function(){ return function(){}; };
 
 describe('Handlers Generators', function(){
   var target, config, metadata, clientStub, req, res, actionStub, next, error;
@@ -36,7 +35,7 @@ describe('Handlers Generators', function(){
       json: sinon.stub()
     };
     res.status.returns(res);
-    next = nop;
+    next = _.noop;
     error = {
       code: 500,
       userMessage: 'user message',
