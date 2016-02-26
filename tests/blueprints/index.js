@@ -3,6 +3,7 @@ var fs = require('fs'),
     _ = require('lodash');
 
 function link(path){
+  if (!path) { return null; }
   return 'http://test/v1' + path;
 }
 
