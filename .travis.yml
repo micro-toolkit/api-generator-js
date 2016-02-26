@@ -5,13 +5,19 @@ node_js:
   - 0.10
   - 0.12
 before_script:
+  - npm install -g codeclimate-test-reporter
   - npm install -d
 branches:
   only:
     - master
 script:
   - npm test
+after_success:
+  - codeclimate < ./coverage/lcov.info
 addons:
   apt:
     packages:
       - libzmq3-dev
+  code_climate:
+    repo_token:
+      secure: Zacxj82IkO2k7gHV5IpD6NCgKyuys8ucYErdVVWWn3S9rcO+0diaqGTD6doy8+pYg7LB2jbdyoPIJnHZctqY3/DwrVfBdXVpr+ei5Njq7QEoUnmxLNySdXbK6FoZDSdImoWvDwz5SKmIX+rXCp2bu4OBQItw/VzDJHN4fSrww6bFaNtn2EIhqb7AU+IheuoEUn8DXw2NoIBOveRg95+Q3BANyAYhPEzSBH/U7ptd9spPiX92nirQsZuysPoOPUTJQPzepWQnNqm2aCecMo9skD4eFBCL+2J5bJBFKrGd975ZqD15ajvVsATHSq+9Y1L6g1syCSBPantygeg6ivD+2DH4SdefU9eClKwDQjBoyz+EbEZAxi5dtzBYAItFHw7SgY0Uk0CLK61MPUx6Kr0LIlUfYCjgWn69u4UoKQDJs3bRShwzLjAKhDPP3yuofNCAngU42IW3VPCHAozrwwy7vaFMBMAbNI0AjasqLGpvv9INBvDf/7Buv20Q64Kg34ZxrZXERF3l4+aP6WZY/01nvEQNmE1PhH2m8JzLSmxy9ZBiUm5tRxMflDNj9oLlrswYPIAmMNWN1SJtBI0fw5MnxHCxEDoTAjcCMaS062Gec4NIh1RrhZ29Njwut6Xa12n5ZYGRU+qawnP039OgdPwOqrVZsUDImII3eUQOSuz3LFk=
