@@ -1,38 +1,25 @@
-var request = require('supertest'),
+var integrationHelper = require('../support/integration_helper'),
+    request = require('supertest'),
     chai = require('chai'),
     sinon = require('sinon'),
     sinonChai = require('sinon-chai'),
     stubs = require('../stubs/index'),
-    blueprints = require('../blueprints/index'),
-    clientHelper = require('../support/client_helper'),
-    express = require('express'),
-    apiRouter = require('../../index');
+    blueprints = require('../blueprints/index');
 
 chai.should();
 chai.use(sinonChai);
 
 describe('Integration: User Endpoints', function(){
-  var app, clientStub, server;
+  var clientStub, app;
 
   before(function(){
-    clientStub = clientHelper.init();
-    var metadata = require('../metadata/index');
-    var config = {
-      runtimeConfig: { baseUrl: 'http://test' },
-      metadata: metadata
-    };
-    app = express();
-    var router = apiRouter(config);
-    app.use(router);
-    server = app.listen(8089);
+    clientStub = integrationHelper.clientStub;
+    var system = integrationHelper.before();
+    app = system.app;
+    clientStub = system.clientStub;
   });
 
-  after(function(){
-    clientHelper.restore();
-    clientStub = null;
-    server.close();
-    server = null;
-  });
+  after(integrationHelper.after);
 
   describe('GET /v1/users', function(){
     it('should return not found', function(done){
