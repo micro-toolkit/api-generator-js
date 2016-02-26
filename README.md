@@ -212,8 +212,30 @@ This will generate the following routes:
     API::METADATA::INFO - Loaded API routes...
     API::INFO - Server running on port 8081
 
-The parameters `userId` and ìd`(on resource endpoints only) will be sent to service on payload.
+The parameters `userId` and `id`(on resource endpoints only) will be sent to service on payload.
 
+## Support path prefix
+
+If we have a model that needs to have a prefix path we may configure it using path key. This configuration will make the api routes prefixed with the path.
+
+As an example we can have the following model configuration (metadata from api-example project):
+
+```json
+{
+  "properties": [ "name", "userId" ],
+  "relations": [{ "name": "user", "type": "resource" }],
+  "actions": ["list"],
+  "path": {
+    "prefix": "admin/"
+  }
+}
+```
+
+This will generate the following routes:
+
+    API::METADATA::INFO - Loaded API Models...
+    API::METADATA::INFO - Loading API routes...
+    API::METADATA::INFO - Mount route GET 	/v1/admin/claims
 
 ## Contributing
 

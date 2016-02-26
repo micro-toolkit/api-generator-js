@@ -13,11 +13,19 @@ describe('paths', function(){
     it('should return a pluralized collection path', function(){
       target.collection(metadata.v1.task).should.be.eql('/v1/tasks');
     });
+
+    it('should return a prefixed collection path', function(){
+      target.collection(metadata.v1.claim).should.be.eql('/v1/admin/claims');
+    });
   });
 
   describe('#resource', function(){
     it('should return a resource path', function(){
       target.resource(metadata.v1.task).should.be.eql('/v1/tasks/:id');
+    });
+
+    it('should return a prefixed resource path', function(){
+      target.resource(metadata.v1.claim).should.be.eql('/v1/admin/claims/:id');
     });
   });
 
