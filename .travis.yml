@@ -5,6 +5,7 @@ node_js:
   - 0.10
   - 0.12
 before_script:
+  - npm install -g codeclimate-test-reporter
   - npm install -d
 branches:
   only:
