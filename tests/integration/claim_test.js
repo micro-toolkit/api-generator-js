@@ -51,24 +51,4 @@ describe('Integration: User Endpoints', function(){
         .end(done);
     });
   });
-
-  describe('GET /v1/admin/claims/:id', function(){
-    afterEach(function(){
-      clientStub.get.restore();
-    });
-
-    it('return a model resource', function(done){
-      var stub = sinon.stub().resolves(stubs.claim);
-      sinon.stub(clientStub, 'get')
-        .withArgs({id:'1'})
-        .returns(stub());
-
-      request(app)
-        .get('/v1/admin/claims/1')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .expect(blueprints.claim)
-        .end(done);
-    });
-  });
 });

@@ -1,9 +1,8 @@
 {
-  "id": "1",
   "userId": "pjanuario",
   "name": "Admin",
   "_links": {
-    "self": "/admin/claims/1",
+    "self": null,
     "user": "/users/pjanuario"
   }
 }
