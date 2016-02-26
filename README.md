@@ -1,6 +1,12 @@
 [![Build Status](https://travis-ci.org/micro-toolkit/api-generator-js.svg?branch=master)](https://travis-ci.org/micro-toolkit/api-generator-js)
+[![Code Climate](https://codeclimate.com/github/micro-toolkit/api-generator-js/badges/gpa.svg)](https://codeclimate.com/github/micro-toolkit/api-generator-js)
+[![Test Coverage](https://codeclimate.com/github/micro-toolkit/api-generator-js/badges/coverage.svg)](https://codeclimate.com/github/micro-toolkit/api-generator-js/coverage)
+[![Issue Count](https://codeclimate.com/github/micro-toolkit/api-generator-js/badges/issue_count.svg)](https://codeclimate.com/github/micro-toolkit/api-generator-js)
+[![Dependency Status](https://gemnasium.com/micro-toolkit/api-generator-js.svg)](https://gemnasium.com/micro-toolkit/api-generator-js)
 
 # Micro Toolkit API Generators
+
+[![npm](https://img.shields.io/npm/v/micro-toolkit-api-generators.svg)](https://www.npmjs.com/package/micro-toolkit-api-generators)
 
 The Micro toolkit API generators will allow you to generate express handlers to connect to the micro toolkit services using a set of code conventions.
 
