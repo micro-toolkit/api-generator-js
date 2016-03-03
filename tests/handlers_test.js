@@ -25,7 +25,10 @@ describe('Handlers Generators', function(){
   beforeEach(function(){
     metadata = require('./metadata/index');
     config = {
-      runtimeConfig: { baseUrl: 'http://test' },
+      runtimeConfig: {
+        baseUrl: 'http://test',
+        documentationUrl: 'http://test#docs'
+      },
       metadata: metadata
     };
     target = require('../lib/handlers')(config);
@@ -143,10 +146,11 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'list').rejects(error);
+      });
 
+      it('should set status with error code', function(done){
         res.status = function(code){
           code.should.be.equal(500);
           done();
@@ -154,22 +158,21 @@ describe('Handlers Generators', function(){
         target.collection(metadata.v1.task)(req, res, next);
       });
 
-      // TODO: this isnt working properly with spy.should.have.been.called
-      // a bug will be open to fix this, need to proceed for now
-      xit('should set json response error body', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
-
-        jsonStub = function(){ done(); }
-        res = {
-          status: function(){ return jsonStub; }
+      it('should have json body with the error', function(done){
+        res.json = function(error){
+          error.should.be.eql({
+            code: 'api_error',
+            userMessage: 'user message',
+            developerMessage: 'dev message',
+            validationErrors: [],
+            documentationUrl: 'http://test#docs'
+          });
+          done();
         };
         target.collection(metadata.v1.task)(req, res, next);
       });
 
       it('should execute next handler', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         // TODO: use sinon chai and spy
         var spy = done;
         target.collection(metadata.v1.task)(req, res, spy);
@@ -242,9 +245,11 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'get').rejects(error);
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'get').returns(stub());
         res.status = function(code){
           code.should.be.equal(500);
           done();
@@ -252,19 +257,21 @@ describe('Handlers Generators', function(){
         target.getResource(metadata.v1.task)(req, res, next);
       });
 
-      // TODO: this isnt working properly with spy.should.have.been.called
-      // a bug will be open to fix this, need to proceed for now
-      xit('should set json response error body', function(){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'get').returns(stub());
-        var spy = res.json;
+      it('should have json body with the error', function(done){
+        res.json = function(error){
+          error.should.be.eql({
+            code: 'api_error',
+            userMessage: 'user message',
+            developerMessage: 'dev message',
+            validationErrors: [],
+            documentationUrl: 'http://test#docs'
+          });
+          done();
+        };
         target.getResource(metadata.v1.task)(req, res, next);
-        spy.should.have.been.calledWith('error payload');
       });
 
       it('should execute next handler', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'get').returns(stub());
         // TODO: use sinon chai and spy
         var spy = done;
         target.getResource(metadata.v1.task)(req, res, spy);
@@ -345,9 +352,11 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'create').rejects(error);
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'create').returns(stub());
         res.status = function(code){
           code.should.be.equal(500);
           done();
@@ -355,19 +364,21 @@ describe('Handlers Generators', function(){
         target.createResource(metadata.v1.task)(req, res, next);
       });
 
-      // TODO: this isnt working properly with spy.should.have.been.called
-      // a bug will be open to fix this, need to proceed for now
-      xit('should set json response error body', function(){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'create').returns(stub());
-        var spy = res.json;
+      it('should have json body with the error', function(done){
+        res.json = function(error){
+          error.should.be.eql({
+            code: 'api_error',
+            userMessage: 'user message',
+            developerMessage: 'dev message',
+            validationErrors: [],
+            documentationUrl: 'http://test#docs'
+          });
+          done();
+        };
         target.createResource(metadata.v1.task)(req, res, next);
-        spy.should.have.been.calledWith('error payload');
       });
 
       it('should execute next handler', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'create').returns(stub());
         // TODO: use sinon chai and spy
         var spy = done;
         target.createResource(metadata.v1.task)(req, res, spy);
@@ -462,9 +473,11 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'update').rejects(error);
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'update').returns(stub());
         res.status = function(code){
           code.should.be.equal(500);
           done();
@@ -472,19 +485,21 @@ describe('Handlers Generators', function(){
         target.updateResource(metadata.v1.task)(req, res, next);
       });
 
-      // TODO: this isnt working properly with spy.should.have.been.called
-      // a bug will be open to fix this, need to proceed for now
-      xit('should set json response error body', function(){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'update').returns(stub());
-        var spy = res.json;
+      it('should have json body with the error', function(done){
+        res.json = function(error){
+          error.should.be.eql({
+            code: 'api_error',
+            userMessage: 'user message',
+            developerMessage: 'dev message',
+            validationErrors: [],
+            documentationUrl: 'http://test#docs'
+          });
+          done();
+        };
         target.updateResource(metadata.v1.task)(req, res, next);
-        spy.should.have.been.calledWith('error payload');
       });
 
       it('should execute next handler', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'update').returns(stub());
         // TODO: use sinon chai and spy
         var spy = done;
         target.updateResource(metadata.v1.task)(req, res, spy);
@@ -546,9 +561,11 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'remove').rejects(error);
+      });
+
       it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
         res.status = function(code){
           code.should.be.equal(500);
           done();
@@ -556,19 +573,21 @@ describe('Handlers Generators', function(){
         target.removeResource(metadata.v1.task)(req, res, next);
       });
 
-      // TODO: this isnt working properly with spy.should.have.been.called
-      // a bug will be open to fix this, need to proceed for now
-      xit('should set json response error body', function(){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
-        var spy = res.json;
+      it('should have json body with the error', function(done){
+        res.json = function(error){
+          error.should.be.eql({
+            code: 'api_error',
+            userMessage: 'user message',
+            developerMessage: 'dev message',
+            validationErrors: [],
+            documentationUrl: 'http://test#docs'
+          });
+          done();
+        };
         target.removeResource(metadata.v1.task)(req, res, next);
-        spy.should.have.been.calledWith('error payload');
       });
 
       it('should execute next handler', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
         // TODO: use sinon chai and spy
         var spy = done;
         target.removeResource(metadata.v1.task)(req, res, spy);
@@ -683,10 +702,11 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'list').rejects(error);
+      });
 
+      it('should set status with error code', function(done){
         res.status = function(code){
           code.should.be.equal(500);
           done();
@@ -694,22 +714,21 @@ describe('Handlers Generators', function(){
         target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
       });
 
-      // TODO: this isnt working properly with spy.should.have.been.called
-      // a bug will be open to fix this, need to proceed for now
-      xit('should set json response error body', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
-
-        jsonStub = function(){ done(); }
-        res = {
-          status: function(){ return jsonStub; }
+      it('should have json body with the error', function(done){
+        res.json = function(error){
+          error.should.be.eql({
+            code: 'api_error',
+            userMessage: 'user message',
+            developerMessage: 'dev message',
+            validationErrors: [],
+            documentationUrl: 'http://test#docs'
+          });
+          done();
         };
         target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
       });
 
       it('should execute next handler', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
         // TODO: use sinon chai and spy
         var spy = done;
         target.resourceRelation(metadata.v1.user.relations[0])(req, res, spy);
@@ -802,12 +821,13 @@ describe('Handlers Generators', function(){
     });
 
     describe('on micro client error', function(){
-      it('should set status with error code', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'call')
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'call')
           .withArgs('activate')
-          .returns(stub());
+          .rejects(error);
+      });
 
+      it('should set status with error code', function(done){
         res.status = function(code){
           code.should.be.equal(500);
           done();
@@ -816,27 +836,24 @@ describe('Handlers Generators', function(){
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
       });
 
-      // TODO: this isnt working properly with spy.should.have.been.called
-      // a bug will be open to fix this, need to proceed for now
-      xit('should set json response error body', function(){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'call')
-          .withArgs('activate')
-          .returns(stub());
-        var spy = res.json;
+      it('should have json body with the error', function(done){
+        res.json = function(error){
+          error.should.be.eql({
+            code: 'api_error',
+            userMessage: 'user message',
+            developerMessage: 'dev message',
+            validationErrors: [],
+            documentationUrl: 'http://test#docs'
+          });
+          done();
+        };
         var action = metadata.v1.user.actions[1];
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
-        spy.should.have.been.calledWith(error);
       });
 
       it('should execute next handler', function(done){
-        var stub = sinon.stub().rejects(error);
-        var actionStub = sinon.stub(clientStub, 'call')
-          .withArgs('activate')
-          .returns(stub());
         // TODO: use sinon chai and spy
         var spy = done;
-
         var action = metadata.v1.user.actions[1];
         target.nonStandardAction(metadata.v1.user, action)(req, res, spy);
       });

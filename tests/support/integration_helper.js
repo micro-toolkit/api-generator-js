@@ -8,7 +8,10 @@ function setupServer(){
   var clientStub = clientHelper.init();
   var metadata = require('../metadata/index');
   var config = {
-    runtimeConfig: { baseUrl: 'http://test' },
+    runtimeConfig: {
+      baseUrl: 'http://test',
+      documentationUrl: 'http://test#docs'
+    },
     metadata: metadata
   };
   var app = express();
