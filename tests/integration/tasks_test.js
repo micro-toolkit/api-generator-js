@@ -44,6 +44,13 @@ describe('Integration: Tasks Endpoints', function(){
         userMessage: 'user message',
         developerMessage: 'dev message'
       };
+      var expectedError = {
+        code: 'api_error',
+        userMessage: error.userMessage,
+        developerMessage: error.developerMessage,
+        validationErrors: [],
+        documentationUrl: 'http://test#docs'
+      };
       var stub = sinon.stub().rejects(error);
       sinon.stub(clientStub, 'list').returns(stub());
 
@@ -51,7 +58,7 @@ describe('Integration: Tasks Endpoints', function(){
         .get('/v1/tasks')
         .expect(500)
         .expect('Content-Type', /json/)
-        .expect(error)
+        .expect(expectedError)
         .end(done);
     });
   });
