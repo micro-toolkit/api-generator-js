@@ -103,10 +103,9 @@ describe('Integration: User Endpoints', function(){
     });
 
     it('return a model resource', function(done){
-      var stub = sinon.stub().resolves();
       sinon.stub(clientStub, 'call')
         .withArgs('deactivate', {id:'pjanuario'})
-        .returns(stub());
+        .resolves(stubs.user);
 
       request(app)
         .delete('/v1/users/pjanuario/active')

@@ -3,6 +3,7 @@ var express = require('express'),
     _ = require('lodash'),
     routes = require('./lib/routes'),
     metadataLoader = require('./lib/metadata'),
+    partialResponseMiddleware = require('express-partial-response'),
     Logger = require('./logger'),
     log = Logger.getLogger('API::METADATA');
 
@@ -37,6 +38,7 @@ function loadVersion(memo, versionMetadata, version) {
 function apiRouter(config){
   var router = express.Router();
   router.use(requestIdMiddleware);
+  router.use(partialResponseMiddleware());
 
   // load models
   log.info('Loading API Models...');
