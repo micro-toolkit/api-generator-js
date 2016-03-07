@@ -803,47 +803,54 @@ describe('Handlers Generators', function(){
       actionStub.should.have.been.called;
     });
 
-    it('should set json response on successfull call', function(done){
-      var model = Model(config, metadata.v1.user)(stubs.user);
-      var stub = sinon.stub().resolves(stubs.user);
-      var actionStub = sinon.stub(clientStub, 'call')
-        .withArgs('activate', {id:'1'})
-        .returns(stub());
+    describe('on call with response data', function(){
+      var actionStub, action;
 
-      // TODO: this isnt working with spy.should.have.been.called
-      res.json = function(data){
-        data.should.be.deep.equal(model);
-        done();
-      };
-      var action = metadata.v1.user.actions[1];
-      target.nonStandardAction(metadata.v1.user, action)(req, res, next);
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'call')
+          .withArgs('activate', {id:'1'})
+          .resolves(stubs.user);
+        action = metadata.v1.user.actions[1];
+      });
+
+      it('should set json response', function(done){
+        var model = Model(config, metadata.v1.user)(stubs.user);
+        // TODO: this isnt working with spy.should.have.been.called
+        res.json = function(data){
+          data.should.be.deep.equal(model);
+          done();
+        };
+        var action = metadata.v1.user.actions[1];
+        target.nonStandardAction(metadata.v1.user, action)(req, res, next);
+      });
+
+      it('should execute next handler', function(done){
+        // TODO: use sinon chai and spy
+        var spy = done;
+        target.nonStandardAction(metadata.v1.user, action)(req, res, spy);
+      });
     });
 
-    it('should set a empty json response on delete call', function(done){
-      var stub = sinon.stub().resolves();
-      var actionStub = sinon.stub(clientStub, 'call')
-        .withArgs('deactivate', {id:'1'})
-        .returns(stub());
+    describe('on call without response data', function(){
+      var actionStub, action;
 
-      // TODO: this isnt working with spy.should.have.been.called
-      res.json = function(data){
-        should.not.exist(data);
-        done();
-      };
-      var action = metadata.v1.user.actions[2];
-      target.nonStandardAction(metadata.v1.user, action)(req, res, next);
-    });
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'call')
+          .withArgs('deactivate', {id:'1'})
+          .resolves();
+        action = metadata.v1.user.actions[2];
+      });
 
-    it('should execute next handler', function(done){
-      var stub = sinon.stub().resolves();
-      var actionStub = sinon.stub(clientStub, 'call')
-        .withArgs('deactivate', {id:'1'})
-        .returns(stub());
-      var action = metadata.v1.user.actions[2];
+      it('should not set content', function(){
+        target.nonStandardAction(metadata.v1.user, action)(req, res, next);
+        res.json.should.not.have.been.called;
+      });
 
-      // TODO: use sinon chai and spy
-      var spy = done;
-      target.nonStandardAction(metadata.v1.user, action)(req, res, spy);
+      it('should execute next handler', function(done){
+        // TODO: use sinon chai and spy
+        var spy = done;
+        target.nonStandardAction(metadata.v1.user, action)(req, res, spy);
+      });
     });
 
     describe('forwarding claims when configured', function(){

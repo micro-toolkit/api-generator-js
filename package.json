@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.14.2",
     "express": "^4.13.3",
+    "express-partial-response": "^0.3.4",
     "lodash": "^4.5.0",
     "lodash-inflection": "^1.3.2",
     "logger-facade-nodejs": "0.0.3",
