@@ -32,7 +32,7 @@ describe('Handlers Generators', function(){
       metadata: metadata
     };
     target = require('../lib/handlers')(config);
-    req = { params: {}, query: {}, body: {} };
+    req = { params: {}, query: {}, body: {}, requestId: '1' };
     res = {
       status: sinon.stub(),
       json: sinon.stub()
@@ -129,18 +129,25 @@ describe('Handlers Generators', function(){
     });
 
     describe('forwarding claims when configured', function(){
+      var actionStub;
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
+        actionStub = sinon.stub(clientStub, 'list').resolves();
+        req.user = { userId: '1', tenantId: '1' };
       });
 
       it('should call micro client with claims on headers', function(){
-        var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
-        req.user = { userId: '1', tenantId: '1' };
         target.collection(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith(
-          sinon.match.any, { userId: '1', tenantId: '1' }
+          sinon.match.any, sinon.match({ userId: '1', tenantId: '1' })
+        );
+      });
+
+      it('should call micro client with request id on headers', function(){
+        target.collection(metadata.v1.task)(req, res, next);
+        actionStub.should.have.been.calledWith(
+          sinon.match.any, sinon.match({ 'X-REQUEST-ID': '1' })
         );
       });
     });
@@ -228,18 +235,26 @@ describe('Handlers Generators', function(){
     });
 
     describe('forwarding claims when configured', function(){
+      var actionStub;
+
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
+        actionStub = sinon.stub(clientStub, 'get').resolves(task);
+        req.user = { userId: '1', tenantId: '1' };
       });
 
       it('should call micro client with claims on headers', function(){
-        var stub = sinon.stub().resolves(task);
-        var actionStub = sinon.stub(clientStub, 'get').returns(stub());
-        req.user = { userId: '1', tenantId: '1' };
         target.getResource(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith(
-          sinon.match.any, { userId: '1', tenantId: '1' }
+          sinon.match.any, sinon.match({ userId: '1', tenantId: '1' })
+        );
+      });
+
+      it('should call micro client with request id on headers', function(){
+        target.getResource(metadata.v1.task)(req, res, next);
+        actionStub.should.have.been.calledWith(
+          sinon.match.any, sinon.match({ 'X-REQUEST-ID': '1' })
         );
       });
     });
@@ -335,18 +350,26 @@ describe('Handlers Generators', function(){
     });
 
     describe('forwarding claims when configured', function(){
+      var actionStub;
+
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
+        actionStub = sinon.stub(clientStub, 'create').resolves(task);
+        req.user = { userId: '1', tenantId: '1' };
       });
 
       it('should call micro client with claims on headers', function(){
-        var stub = sinon.stub().resolves(task);
-        var actionStub = sinon.stub(clientStub, 'create').returns(stub());
-        req.user = { userId: '1', tenantId: '1' };
         target.createResource(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith(
-          sinon.match.any, { userId: '1', tenantId: '1' }
+          sinon.match.any, sinon.match({ userId: '1', tenantId: '1' })
+        );
+      });
+
+      it('should call micro client with request id on headers', function(){
+        target.createResource(metadata.v1.task)(req, res, next);
+        actionStub.should.have.been.calledWith(
+          sinon.match.any, sinon.match({ 'X-REQUEST-ID': '1' })
         );
       });
     });
@@ -456,18 +479,26 @@ describe('Handlers Generators', function(){
     });
 
     describe('forwarding claims when configured', function(){
+      var actionStub;
+
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
+        actionStub = sinon.stub(clientStub, 'update').resolves(task);
+        req.user = { userId: '1', tenantId: '1' };
       });
 
       it('should call micro client with claims on headers', function(){
-        var stub = sinon.stub().resolves(task);
-        var actionStub = sinon.stub(clientStub, 'update').returns(stub());
-        req.user = { userId: '1', tenantId: '1' };
         target.updateResource(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith(
-          sinon.match.any, { userId: '1', tenantId: '1' }
+          sinon.match.any, sinon.match({ userId: '1', tenantId: '1' })
+        );
+      });
+
+      it('should call micro client with request id on headers', function(){
+        target.updateResource(metadata.v1.task)(req, res, next);
+        actionStub.should.have.been.calledWith(
+          sinon.match.any, sinon.match({ 'X-REQUEST-ID': '1' })
         );
       });
     });
@@ -544,18 +575,27 @@ describe('Handlers Generators', function(){
     });
 
     describe('forwarding claims when configured', function(){
+      var actionStub;
+
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
+        actionStub = sinon.stub(clientStub, 'remove').resolves();
+        req.user = { userId: '1', tenantId: '1' };
       });
 
       it('should call micro client with claims on headers', function(){
         var stub = sinon.stub().resolves();
-        var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
-        req.user = { userId: '1', tenantId: '1' };
         target.removeResource(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith(
-          sinon.match.any, { userId: '1', tenantId: '1' }
+          sinon.match.any, sinon.match({ userId: '1', tenantId: '1' })
+        );
+      });
+
+      it('should call micro client with request id on headers', function(){
+        target.removeResource(metadata.v1.task)(req, res, next);
+        actionStub.should.have.been.calledWith(
+          sinon.match.any, sinon.match({ 'X-REQUEST-ID': '1' })
         );
       });
     });
@@ -685,18 +725,26 @@ describe('Handlers Generators', function(){
     });
 
     describe('forwarding claims when configured', function(){
+      var actionStub;
+
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
+        actionStub = sinon.stub(clientStub, 'list').resolves([]);
+        req.user = { userId: '1', tenantId: '1' };
       });
 
       it('should call micro client with claims on headers', function(){
-        var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
-        req.user = { userId: '1', tenantId: '1' };
         target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
         actionStub.should.have.been.calledWith(
-          sinon.match.any, { userId: '1', tenantId: '1' }
+          sinon.match.any, sinon.match({ userId: '1', tenantId: '1' })
+        );
+      });
+
+      it('should call micro client with request id on headers', function(){
+        target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
+        actionStub.should.have.been.calledWith(
+          sinon.match.any, sinon.match({ userId: '1', tenantId: '1' })
         );
       });
     });
@@ -799,23 +847,32 @@ describe('Handlers Generators', function(){
     });
 
     describe('forwarding claims when configured', function(){
+      var actionStub, action;
+
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
+        req.user = { userId: '1', tenantId: '1' };
+        actionStub = sinon.stub(clientStub, 'call')
+          .withArgs('activate')
+          .resolves();
+
+        action = metadata.v1.user.actions[1];
       });
 
       it('should call micro client with claims on headers', function(){
-        req.user = { userId: '1', tenantId: '1' };
-        var stub = sinon.stub().resolves();
-        var actionStub = sinon.stub(clientStub, 'call')
-          .withArgs('activate')
-          .returns(stub());
-
-        var action = metadata.v1.user.actions[1];
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
         actionStub.should.have.been.calledWith(
           sinon.match.any, sinon.match.any,
-          { userId: '1', tenantId: '1' }
+          sinon.match({ userId: '1', tenantId: '1' })
+        );
+      });
+
+      it('should call micro client with request id on headers', function(){
+        target.nonStandardAction(metadata.v1.user, action)(req, res, next);
+        actionStub.should.have.been.calledWith(
+          sinon.match.any, sinon.match.any,
+          sinon.match({ 'X-REQUEST-ID': '1' })
         );
       });
     });
