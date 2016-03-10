@@ -14,6 +14,10 @@ describe('paths', function(){
       target.collection(metadata.v1.task).should.be.eql('/v1/tasks');
     });
 
+    it('should return a pluralized lower case collection path', function(){
+      target.collection(metadata.v1.userAssignment).should.be.eql('/v1/userassignments');
+    });
+
     it('should return a prefixed collection path', function(){
       target.collection(metadata.v1.claim).should.be.eql('/v1/admin/claims');
     });
@@ -38,6 +42,11 @@ describe('paths', function(){
     it('should return a relation collection path', function(){
       var relation = metadata.v1.user.relations[0];
       target.resourceRelation(relation).should.be.eql('/v1/users/:id/tasks');
+    });
+
+    it('should return a relation collection path in lower case', function(){
+      var relation = metadata.v1.user.relations[1];
+      target.resourceRelation(relation).should.be.eql('/v1/users/:id/userassignments');
     });
   });
 
