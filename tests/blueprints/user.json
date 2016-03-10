@@ -4,6 +4,7 @@
   "active": true,
   "_links": {
     "self": "/users/pjanuario",
-    "tasks": "/users/pjanuario/tasks"
+    "tasks": "/users/pjanuario/tasks",
+    "userAssignments": "/users/pjanuario/userassignments"
   }
 }

@@ -4,6 +4,10 @@
     {
       "name": "tasks",
       "type": "collection"
+    },
+    {
+      "name": "userAssignments",
+      "type": "collection"
     }
   ],
   "actions": [
