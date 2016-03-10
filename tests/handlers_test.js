@@ -35,6 +35,7 @@ describe('Handlers Generators', function(){
     req = { params: {}, query: {}, body: {}, requestId: '1' };
     res = {
       status: sinon.stub(),
+      sendStatus: sinon.stub(),
       json: sinon.stub()
     };
     res.status.returns(res);
@@ -558,11 +559,13 @@ describe('Handlers Generators', function(){
       actionStub.should.have.been.calledWith({id:'1'});
     });
 
-    it('should call json response on successfull call', function(done){
+    it('should return no content status code', function(done){
       var stub = sinon.stub().resolves();
       var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
-      // TODO: this isnt working with spy.should.have.been.called
-      res.json = done;
+      res.sendStatus = function (status) {
+        status.should.be.equal(204);
+        done();
+      }
       target.removeResource(metadata.v1.task)(req, res, next);
     });
 

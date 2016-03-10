@@ -83,6 +83,22 @@ describe('Integration: Tasks Endpoints', function(){
     });
   });
 
+  describe('DELETE /v1/tasks/:id', function(){
+    afterEach(function(){
+      clientStub.remove.restore();
+    });
+
+    it('return no content', function(done){
+      sinon.stub(clientStub, 'remove')
+        .withArgs({id:'1'})
+        .resolves(stubs.task);
+
+      request(app)
+        .delete('/v1/tasks/1')
+        .expect(204, done);
+    });
+  });
+
   describe('GET /v1/users/1/tasks', function(){
     afterEach(function(){
       clientStub.list.restore();
