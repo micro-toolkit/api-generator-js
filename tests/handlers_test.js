@@ -220,7 +220,7 @@ describe('Handlers Generators', function(){
         var actionStub = sinon.stub(clientStub, 'get').resolves(user);
         req.user = { userId: '1' };
         target.getResource(metadata.v1.me)(req, res, next);
-        actionStub.should.have.been.calledWith({userId:'1'});
+        actionStub.should.have.been.calledWith({id:'1'});
       });
     });
 

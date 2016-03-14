@@ -28,7 +28,7 @@ describe('Integration: Me Endpoints', function(){
 
     it('return a model', function(done){
       sinon.stub(clientStub, 'get')
-        .withArgs(sinon.match({ userId: 'pjanuario' }))
+        .withArgs(sinon.match({ id: 'pjanuario' }))
         .resolves(stubs.user);
 
       request(app)
