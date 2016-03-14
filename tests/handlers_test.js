@@ -214,6 +214,16 @@ describe('Handlers Generators', function(){
       actionStub.should.have.been.calledWith({id:'1'});
     });
 
+    describe('when metadata with current user', function () {
+      it('should call micro client with current user key', function(){
+        var user = { id: '1', name: 'something' };
+        var actionStub = sinon.stub(clientStub, 'get').resolves(user);
+        req.user = { userId: '1' };
+        target.getResource(metadata.v1.me)(req, res, next);
+        actionStub.should.have.been.calledWith({userId:'1'});
+      });
+    });
+
     it('should set json response on successfull call', function(done){
       var model = Model(config, metadata.v1.task)(task);
       var stub = sinon.stub().resolves(task);
@@ -656,6 +666,15 @@ describe('Handlers Generators', function(){
       req.params.id = '1';
       target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
       actionStub.should.have.been.calledWith(sinon.match({ userId: '1' }));
+    });
+
+    describe('when parent metadata with current user', function () {
+      it('should call micro client with current user key', function(){
+        var actionStub = sinon.stub(clientStub, 'list').resolves([]);
+        req.user = { userId: '1' };
+        target.resourceRelation(metadata.v1.me.relations[0])(req, res, next);
+        actionStub.should.have.been.calledWith(sinon.match({ userId: '1' }));
+      });
     });
 
     it('should call micro client with limit and offset defaults', function(){

@@ -21,6 +21,10 @@ describe('paths', function(){
     it('should return a prefixed collection path', function(){
       target.collection(metadata.v1.claim).should.be.eql('/v1/admin/claims');
     });
+
+    it('should return a collection path specified by model', function(){
+      target.collection(metadata.v1.me).should.be.eql('/v1/me');
+    });
   });
 
   describe('#resource', function(){
@@ -30,6 +34,10 @@ describe('paths', function(){
 
     it('should return a prefixed resource path', function(){
       target.resource(metadata.v1.claim).should.be.eql('/v1/admin/claims/:id');
+    });
+
+    it('should return a resource path without identifier', function(){
+      target.resource(metadata.v1.me).should.be.eql('/v1/me');
     });
   });
 
@@ -47,6 +55,11 @@ describe('paths', function(){
     it('should return a relation collection path in lower case', function(){
       var relation = metadata.v1.user.relations[1];
       target.resourceRelation(relation).should.be.eql('/v1/users/:id/userassignments');
+    });
+
+    it('should return a relation collection path without identifier', function(){
+      var relation = metadata.v1.me.relations[0];
+      target.resourceRelation(relation).should.be.eql('/v1/me/alerts');
     });
   });
 

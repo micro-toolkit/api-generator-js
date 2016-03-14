@@ -1,0 +1,9 @@
+{
+  "id": "pjanuario",
+  "name": "Pedro",
+  "active": true,
+  "_links": {
+    "self": "/me",
+    "alerts": "/me/alerts"
+  }
+}

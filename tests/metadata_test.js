@@ -1,8 +1,6 @@
 var chai = require('chai'),
-    should = chai.should,
+    should = chai.should(),
     expect = chai.expect;
-
-chai.should();
 
 describe('metadata', function(){
   var target, metadata;
@@ -124,6 +122,43 @@ describe('metadata', function(){
           .should.have.property('modelFk', 'userId');
       });
     });
+  });
+
+  describe('on loading path', function () {
+    it('should set path', function () {
+      should.exist(target('v1', 'task', {}).path);
+    });
+
+    it('should set path without prefix', function () {
+      should.not.exist(target('v1', 'task', {}).path.prefix);
+    });
+
+    it('should set path without value', function () {
+      should.not.exist(target('v1', 'task', {}).path.value);
+    });
+
+    describe('with path object', function () {
+      it('should set value to null when not present', function () {
+        var metadata = { path: {} };
+        expect(target('v1', 'claim', metadata).path.value).to.be.equal(null);
+      });
+
+      it('should set prefix to null when not present', function () {
+        var metadata = { path: {} };
+        expect(target('v1', 'claim', metadata).path.prefix).to.be.equal(null);
+      });
+
+      it('should set path prefix', function () {
+        var metadata = { path: { prefix: 'admin/' } };
+        target('v1', 'claim', metadata).path.prefix.should.be.equal('admin/');
+      });
+
+      it('should set path value', function () {
+        var metadata = { path: { value: 'me' } };
+        target('v1', 'me', metadata).path.value.should.be.equal('me');
+      });
+    });
+
   });
 
 });

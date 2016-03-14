@@ -1,0 +1,7 @@
+{
+  "path": "me",
+  "currentUserKey": "userId",
+  "properties": ["id", "name", "active"],
+  "relations": [{ "name": "alerts", "type": "collection" }],
+  "actions": ["get"]
+}
