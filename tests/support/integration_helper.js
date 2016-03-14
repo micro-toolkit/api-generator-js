@@ -4,6 +4,11 @@ var clientHelper = require('../support/client_helper'),
 
 var server;
 
+function authFakeMiddleware(req, res, next) {
+  req.user = { userId: 'pjanuario' };
+  return next();
+}
+
 function setupServer(){
   var clientStub = clientHelper.init();
   var metadata = require('../metadata/index');
@@ -16,6 +21,7 @@ function setupServer(){
   };
   var app = express();
   var router = apiRouter(config);
+  app.use(authFakeMiddleware);
   app.use(router);
   server = app.listen(8089);
   return {
