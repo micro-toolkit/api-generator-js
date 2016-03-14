@@ -243,6 +243,45 @@ This will generate the following routes:
     API::METADATA::INFO - Loading API routes...
     API::METADATA::INFO - Mount route GET 	/v1/admin/claims
 
+## Overriding default paths
+
+The path property allow you to override the default path configuration. The default path configuration is to transform the model name in a pluralized string, in certain cases we may need something different we can use path property.
+
+As an example we can have the following model configuration (metadata api-example project):
+
+```json
+{
+  "path": "me",
+  "currentUserKey": "userId",
+  "properties": ["id", "name", "active"],
+  "relations": [{ "name": "alerts", "type": "collection" }],
+  "actions": ["get"]
+}
+```
+
+This will generate a route `GET /me` instead of `GET /mes`.
+
+
+# Support current user endpoints
+
+If we have a model that doesn't needs an identifier to be requested such as `me`, we can define what is the property present in request user object that should be sent in the payload.
+
+As an example we can have the following model configuration (metadata api-example project):
+
+```json
+{
+  "path": "me",
+  "currentUserKey": "userId",
+  "properties": ["id", "name", "active"],
+  "relations": [{ "name": "alerts", "type": "collection" }],
+  "actions": ["get"]
+}
+```
+
+This will generate a route `GET /me` where the property `userId` will be sent in the payload. The value for the userId property will be retrieved from current user object `req.user`.
+
+The following model contains a alert relation and the `userId` property will also be sent in the relation payload.
+
 ## Contributing
 
 1. Fork it
