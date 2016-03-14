@@ -1,0 +1,10 @@
+{
+  "properties": [ "id", "message", "userId", "timestamp"],
+  "actions": ["get"],
+  "relations": [
+    {
+      "name": "user",
+      "type": "resource"
+    }
+  ]
+}
