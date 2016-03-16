@@ -64,6 +64,13 @@ describe('metadata', function(){
         action = { httpVerb: 'put', name: 'active', verb: 'activate' };
       });
 
+      it('should throw a error on invalid standard action', function () {
+        var metadata = {actions: ['invalid'] };
+        expect(function(){
+          target('v1', 'task', metadata)
+        }).to.throw(Error, /is invalid due to standard action/);
+      });
+
       it('should throw a error on invalid http verb', function () {
         action.httpVerb = 'invalid';
         var metadata = {actions: [action] };
