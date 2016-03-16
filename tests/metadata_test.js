@@ -28,6 +28,14 @@ describe('metadata', function(){
 
     describe('with valid non standard action', function () {
 
+      it('should allow get http verb', function () {
+        var expected = [{ httpVerb: 'get', name: 'live', verb: 'live', resource: false }];
+        var action = { httpVerb: 'get', name: 'live', verb: 'live', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'metric', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
       it('should allow post http verb', function () {
         var expected = [{ httpVerb: 'post', name: 'live', verb: 'live', resource: false }];
         var action = { httpVerb: 'post', name: 'live', verb: 'live', resource: false };
