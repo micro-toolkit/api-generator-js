@@ -846,6 +846,25 @@ describe('Handlers Generators', function(){
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
       });
 
+      describe('when response is a collection', function(){
+        beforeEach(function () {
+          clientStub.call.restore();
+          actionStub = sinon.stub(clientStub, 'call')
+            .resolves([stubs.alert]);
+        });
+
+        it('should set json response', function(done){
+          var model = Model(config, metadata.v1.alert)(stubs.alert);
+          // TODO: this isnt working with spy.should.have.been.called
+          res.json = function(data){
+            data.should.be.deep.equal([model]);
+            done();
+          };
+          var action = metadata.v1.alert.actions[1];
+          target.nonStandardAction(metadata.v1.alert, action)(req, res, next);
+        });
+      });
+
       it('should execute next handler', function(done){
         // TODO: use sinon chai and spy
         var spy = done;

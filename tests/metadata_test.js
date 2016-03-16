@@ -26,10 +26,99 @@ describe('metadata', function(){
       target('v1', 'task', {}).relations.should.deep.equal([]);
     });
 
+    describe('with valid non standard action', function () {
+      it('should set action resource to true by default', function () {
+        var expected = [{ httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: true }];
+        var action = { httpVerb: 'get', name: 'resolve', verb: 'resolve' };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
+      it('should not set action resource when specified', function () {
+        var expected = [{ httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: false }];
+        var action = { httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
+      it('should allow get http verb', function () {
+        var expected = [{ httpVerb: 'get', name: 'live', verb: 'live', resource: false }];
+        var action = { httpVerb: 'get', name: 'live', verb: 'live', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'metric', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
+      it('should allow post http verb', function () {
+        var expected = [{ httpVerb: 'post', name: 'live', verb: 'live', resource: false }];
+        var action = { httpVerb: 'post', name: 'live', verb: 'live', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'metric', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
+      it('should allow put http verb', function () {
+        var expected = [{ httpVerb: 'put', name: 'live', verb: 'live', resource: false }];
+        var action = { httpVerb: 'put', name: 'live', verb: 'live', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'metric', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
+      it('should allow delete http verb', function () {
+        var expected = [{ httpVerb: 'delete', name: 'live', verb: 'live', resource: false }];
+        var action = { httpVerb: 'delete', name: 'live', verb: 'live', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'metric', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+    });
+
+    describe('with valid standard actions', function () {
+      it('should allow get action', function () {
+        var metadata = {actions: ['get'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['get']);
+      });
+
+      it('should allow list action', function () {
+        var metadata = {actions: ['list'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['list']);
+      });
+
+      it('should allow create action', function () {
+        var metadata = {actions: ['create'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['create']);
+      });
+
+      it('should allow update action', function () {
+        var metadata = {actions: ['update'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['update']);
+      });
+
+      it('should allow remove action', function () {
+        var metadata = {actions: ['remove'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['remove']);
+      });
+    });
+
     describe('with invalid action', function () {
       var action;
       beforeEach(function () {
         action = { httpVerb: 'put', name: 'active', verb: 'activate' };
+      });
+
+      it('should throw a error on invalid standard action', function () {
+        var metadata = {actions: ['invalid'] };
+        expect(function(){
+          target('v1', 'task', metadata)
+        }).to.throw(Error, /is invalid due to standard action/);
       });
 
       it('should throw a error on invalid http verb', function () {
