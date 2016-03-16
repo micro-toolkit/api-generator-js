@@ -23,7 +23,7 @@ function setupServer(){
   var router = apiRouter(config);
   app.use(authFakeMiddleware);
   app.use(router);
-  server = app.listen(8089);
+  server = app.listen(8090);
   return {
     app: app,
     clientStub: clientStub
