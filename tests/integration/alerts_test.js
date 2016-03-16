@@ -40,6 +40,25 @@ describe('Integration: Alerts Endpoints', function(){
     });
   });
 
+  describe('GET /v1/alerts/recent', function(){
+    afterEach(function(){
+      clientStub.call.restore();
+    });
+
+    it('return a model', function(done){
+      sinon.stub(clientStub, 'call')
+        .withArgs('recent')
+        .resolves([stubs.alert]);
+
+      request(app)
+        .get('/v1/alerts/recent')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect([blueprints.alert])
+        .end(done);
+    });
+  });
+
   describe('GET /v1/alerts/:id', function(){
     afterEach(function(){
       clientStub.get.restore();
