@@ -1,6 +1,9 @@
 {
   "properties": [ "id", "message", "userId", "timestamp"],
-  "actions": ["get"],
+  "actions": [
+    "get",
+    { "name": "recent", "httpVerb": "get", "verb": "recent", "resource": false }
+  ],
   "relations": [
     {
       "name": "user",
