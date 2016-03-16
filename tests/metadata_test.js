@@ -27,6 +27,21 @@ describe('metadata', function(){
     });
 
     describe('with valid non standard action', function () {
+      it('should set action resource to true by default', function () {
+        var expected = [{ httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: true }];
+        var action = { httpVerb: 'get', name: 'resolve', verb: 'resolve' };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
+      it('should not set action resource when specified', function () {
+        var expected = [{ httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: false }];
+        var action = { httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
 
       it('should allow get http verb', function () {
         var expected = [{ httpVerb: 'get', name: 'live', verb: 'live', resource: false }];
