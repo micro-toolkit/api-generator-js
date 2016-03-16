@@ -26,6 +26,33 @@ describe('metadata', function(){
       target('v1', 'task', {}).relations.should.deep.equal([]);
     });
 
+    describe('with valid non standard action', function () {
+
+      it('should allow post http verb', function () {
+        var expected = [{ httpVerb: 'post', name: 'live', verb: 'live', resource: false }];
+        var action = { httpVerb: 'post', name: 'live', verb: 'live', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'metric', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
+      it('should allow put http verb', function () {
+        var expected = [{ httpVerb: 'put', name: 'live', verb: 'live', resource: false }];
+        var action = { httpVerb: 'put', name: 'live', verb: 'live', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'metric', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
+      it('should allow delete http verb', function () {
+        var expected = [{ httpVerb: 'delete', name: 'live', verb: 'live', resource: false }];
+        var action = { httpVerb: 'delete', name: 'live', verb: 'live', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'metric', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+    });
+
     describe('with valid standard actions', function () {
       it('should allow get action', function () {
         var metadata = {actions: ['get'] };
