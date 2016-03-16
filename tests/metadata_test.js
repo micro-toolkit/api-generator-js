@@ -26,6 +26,38 @@ describe('metadata', function(){
       target('v1', 'task', {}).relations.should.deep.equal([]);
     });
 
+    describe('with valid standard actions', function () {
+      it('should allow get action', function () {
+        var metadata = {actions: ['get'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['get']);
+      });
+
+      it('should allow list action', function () {
+        var metadata = {actions: ['list'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['list']);
+      });
+
+      it('should allow create action', function () {
+        var metadata = {actions: ['create'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['create']);
+      });
+
+      it('should allow update action', function () {
+        var metadata = {actions: ['update'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['update']);
+      });
+
+      it('should allow remove action', function () {
+        var metadata = {actions: ['remove'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['remove']);
+      });
+    });
+
     describe('with invalid action', function () {
       var action;
       beforeEach(function () {
