@@ -117,6 +117,14 @@ describe('Handlers Generators', function(){
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
       });
 
+      it('should call micro client without access_token', function(){
+        var stub = sinon.stub().resolves([]);
+        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+        req.query.access_token = 'secretToken';
+        target.collection(metadata.v1.task)(req, res, next);
+        actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
+      });
+
       it('should call micro client without excluded query string params',
       function(){
         config.runtimeConfig.excludeQueryString = 'other';
