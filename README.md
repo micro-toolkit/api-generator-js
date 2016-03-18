@@ -133,7 +133,7 @@ app.listen(8081);
 
 ## Excluding some parameters from query string
 
-By default the api generators will forward to the service all query string parameters except token. To override this configuration and have control over it the application can specificly set wich parameters to filter.
+By default the api generators will forward to the service all query string parameters except token and access_token. To override this configuration and have control over it the application can specificly set wich parameters to filter.
 
 
 ```javascript
