@@ -13,6 +13,6 @@
   "actions": [
     "get",
     { "name": "active", "httpVerb": "PUT", "verb": "activate" },
-    { "name": "active", "httpVerb": "DELETE", "verb": "deactivate" }
+    { "name": "active", "httpVerb": "DELETE", "verb": "deactivate", "allow": "token" }
   ]
 }
