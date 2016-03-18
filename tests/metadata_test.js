@@ -28,7 +28,7 @@ describe('metadata', function(){
 
     describe('with valid non standard action', function () {
       it('should set action resource to true by default', function () {
-        var expected = [{ httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: true }];
+        var expected = [{ httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: true, allow: [] }];
         var action = { httpVerb: 'get', name: 'resolve', verb: 'resolve' };
         var metadata = {actions: [action] };
         var actual = target('v1', 'task', metadata).actions;
@@ -36,7 +36,7 @@ describe('metadata', function(){
       });
 
       it('should not set action resource when specified', function () {
-        var expected = [{ httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: false }];
+        var expected = [{ httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: false, allow: [] }];
         var action = { httpVerb: 'get', name: 'resolve', verb: 'resolve', resource: false };
         var metadata = {actions: [action] };
         var actual = target('v1', 'task', metadata).actions;
@@ -44,7 +44,7 @@ describe('metadata', function(){
       });
 
       it('should allow get http verb', function () {
-        var expected = [{ httpVerb: 'get', name: 'live', verb: 'live', resource: false }];
+        var expected = [{ httpVerb: 'get', name: 'live', verb: 'live', resource: false, allow: [] }];
         var action = { httpVerb: 'get', name: 'live', verb: 'live', resource: false };
         var metadata = {actions: [action] };
         var actual = target('v1', 'metric', metadata).actions;
@@ -52,7 +52,7 @@ describe('metadata', function(){
       });
 
       it('should allow post http verb', function () {
-        var expected = [{ httpVerb: 'post', name: 'live', verb: 'live', resource: false }];
+        var expected = [{ httpVerb: 'post', name: 'live', verb: 'live', resource: false, allow: [] }];
         var action = { httpVerb: 'post', name: 'live', verb: 'live', resource: false };
         var metadata = {actions: [action] };
         var actual = target('v1', 'metric', metadata).actions;
@@ -60,7 +60,7 @@ describe('metadata', function(){
       });
 
       it('should allow put http verb', function () {
-        var expected = [{ httpVerb: 'put', name: 'live', verb: 'live', resource: false }];
+        var expected = [{ httpVerb: 'put', name: 'live', verb: 'live', resource: false, allow: [] }];
         var action = { httpVerb: 'put', name: 'live', verb: 'live', resource: false };
         var metadata = {actions: [action] };
         var actual = target('v1', 'metric', metadata).actions;
@@ -68,8 +68,16 @@ describe('metadata', function(){
       });
 
       it('should allow delete http verb', function () {
-        var expected = [{ httpVerb: 'delete', name: 'live', verb: 'live', resource: false }];
+        var expected = [{ httpVerb: 'delete', name: 'live', verb: 'live', resource: false, allow: [] }];
         var action = { httpVerb: 'delete', name: 'live', verb: 'live', resource: false };
+        var metadata = {actions: [action] };
+        var actual = target('v1', 'metric', metadata).actions;
+        actual.should.be.deep.equal(expected);
+      });
+
+      it('should set allow', function () {
+        var expected = [{ httpVerb: 'put', name: 'live', verb: 'live', resource: false, allow: ['prop'] }];
+        var action = { httpVerb: 'put', name: 'live', verb: 'live', resource: false, allow: ['prop'] };
         var metadata = {actions: [action] };
         var actual = target('v1', 'metric', metadata).actions;
         actual.should.be.deep.equal(expected);
