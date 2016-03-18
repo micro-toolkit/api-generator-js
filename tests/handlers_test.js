@@ -823,12 +823,32 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client activate action', function(){
-      var stub = sinon.stub().resolves();
       var actionStub = sinon.stub(clientStub, 'call')
-        .withArgs('activate', {id:'1'})
-        .returns(stub());
+        .withArgs('activate')
+        .resolves();
 
       var action = metadata.v1.user.actions[1];
+      target.nonStandardAction(metadata.v1.user, action)(req, res, next);
+      actionStub.should.have.been.called;
+    });
+
+    it('should call micro client with id on payload', function(){
+      var actionStub = sinon.stub(clientStub, 'call')
+        .withArgs('activate', {id:'1'})
+        .resolves();
+
+      var action = metadata.v1.user.actions[1];
+      target.nonStandardAction(metadata.v1.user, action)(req, res, next);
+      actionStub.should.have.been.called;
+    });
+
+    it('should call micro client with allowed property on payload', function(){
+      var actionStub = sinon.stub(clientStub, 'call')
+        .withArgs('action', sinon.match({prop: true}))
+        .resolves();
+
+      req.body = { prop: true };
+      var action = { httpVerb: 'put', name: 'action', verb: 'action', allow: ['prop'] };
       target.nonStandardAction(metadata.v1.user, action)(req, res, next);
       actionStub.should.have.been.called;
     });

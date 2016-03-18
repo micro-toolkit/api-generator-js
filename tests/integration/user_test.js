@@ -104,11 +104,12 @@ describe('Integration: User Endpoints', function(){
 
     it('return a model resource', function(done){
       sinon.stub(clientStub, 'call')
-        .withArgs('deactivate', {id:'pjanuario'})
+        .withArgs('deactivate', {id:'pjanuario', token: 'someextrainfo' })
         .resolves(stubs.user);
 
       request(app)
         .delete('/v1/users/pjanuario/active')
+        .send({ token: 'someextrainfo' })
         .expect(200)
         .expect('Content-Type', /json/)
         .end(done);
