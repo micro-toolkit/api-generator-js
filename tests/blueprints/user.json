@@ -2,9 +2,11 @@
   "id": "pjanuario",
   "name": "Pedro",
   "active": true,
+  "roleId": "1",
   "_links": {
     "self": "/users/pjanuario",
     "tasks": "/users/pjanuario/tasks",
-    "userAssignments": "/users/pjanuario/userassignments"
+    "userAssignments": "/users/pjanuario/userassignments",
+    "role": "/users/pjanuario/roles/1"
   }
 }
