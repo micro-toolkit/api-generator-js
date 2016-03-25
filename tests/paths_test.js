@@ -61,6 +61,13 @@ describe('paths', function(){
       var relation = metadata.v1.me.relations[0];
       target.resourceRelation(relation).should.be.eql('/v1/me/alerts');
     });
+
+    describe('with model that contains a parent', function(){
+      it('should return a relation resource path', function(){
+        var relation = metadata.v1.user.relations[2];
+        target.resourceRelation(relation).should.be.eql('/v1/users/:userId/roles/:id');
+      });
+    });
   });
 
   describe('#nonStandardAction', function(){
