@@ -75,6 +75,24 @@ describe('Handlers Generators', function(){
       actionStub.should.have.been.calledWith({ limit: 2, offset: 1 });
     });
 
+    it('should call micro client with request limit and offset as integers', function() {
+      var stub = sinon.stub().resolves([]);
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      req.query.limit = '2';
+      req.query.offset = '1';
+      target.collection(metadata.v1.task)(req, res, next);
+      actionStub.should.have.been.calledWith({ limit: 2, offset: 1 });
+    });
+
+    it('should call micro client with default limit and offset when request limit and offset are NaN', function() {
+      var stub = sinon.stub().resolves([]);
+      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      req.query.limit = 'foo';
+      req.query.offset = 'bar';
+      target.collection(metadata.v1.task)(req, res, next);
+      actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
+    });
+
     it('should call micro client with request query string data', function(){
       var stub = sinon.stub().resolves([]);
       var actionStub = sinon.stub(clientStub, 'list').returns(stub());
