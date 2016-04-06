@@ -38,6 +38,19 @@ describe('Integration: Tasks Endpoints', function(){
         .end(done);
     });
 
+    it('return a collection with offset and limit', function(done){
+      sinon.stub(clientStub, 'list')
+        .withArgs({limit: 1, offset: 2})
+        .resolves([stubs.task]);
+
+      request(app)
+        .get('/v1/tasks?offset=2&limit=1')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect([blueprints.task])
+        .end(done);
+    });
+
     it('returns a error', function (done) {
       var error = {
         code: 500,
