@@ -1,5 +1,5 @@
 var express = require('express'),
-    requestIdMiddleware = require('./request_id')(),
+    requestIdMiddleware = require('request-id/express')(),
     _ = require('lodash'),
     routes = require('./lib/routes'),
     metadataLoader = require('./lib/metadata'),
