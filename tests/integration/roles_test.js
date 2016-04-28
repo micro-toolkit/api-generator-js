@@ -27,10 +27,9 @@ describe('Integration: Roles Endpoints', function(){
     });
 
     it('should return a collection of models', function(done){
-      var stub = sinon.stub().resolves([stubs.role]);
       sinon.stub(clientStub, 'list')
         .withArgs(sinon.match({userId:'pjanuario'}))
-        .returns(stub());
+        .resolves({payload: [stubs.role]});
 
       request(app)
         .get('/v1/users/pjanuario/roles')
@@ -47,10 +46,9 @@ describe('Integration: Roles Endpoints', function(){
     });
 
     it('return a model resource', function(done){
-      var stub = sinon.stub().resolves(stubs.role);
       sinon.stub(clientStub, 'get')
         .withArgs({userId:'pjanuario', id: '1'})
-        .returns(stub());
+        .resolves({payload: stubs.role});
 
       request(app)
         .get('/v1/users/pjanuario/roles/1')

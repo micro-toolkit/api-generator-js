@@ -27,8 +27,8 @@ describe('Integration: User Endpoints', function(){
     });
 
     it('return a model collection', function(done){
-      var stub = sinon.stub().resolves([stubs.claim]);
-      sinon.stub(clientStub, 'list').returns(stub());
+      sinon.stub(clientStub, 'list')
+        .resolves({payload: [stubs.claim]});
 
       request(app)
         .get('/v1/admin/claims')

@@ -29,7 +29,7 @@ describe('Integration: Alerts Endpoints', function(){
     it('return a model', function(done){
       sinon.stub(clientStub, 'list')
         .withArgs(sinon.match({ userId: 'pjanuario' }))
-        .resolves([stubs.alert]);
+        .resolves({payload: [stubs.alert]});
 
       request(app)
         .get('/v1/me/alerts')
@@ -48,7 +48,7 @@ describe('Integration: Alerts Endpoints', function(){
     it('return a model', function(done){
       sinon.stub(clientStub, 'call')
         .withArgs('recent')
-        .resolves([stubs.alert]);
+        .resolves({payload: [stubs.alert]});
 
       request(app)
         .get('/v1/alerts/recent')
@@ -67,7 +67,7 @@ describe('Integration: Alerts Endpoints', function(){
     it('return a model', function(done){
       sinon.stub(clientStub, 'get')
         .withArgs(sinon.match({ id: '1' }))
-        .resolves(stubs.alert);
+        .resolves({payload: stubs.alert});
 
       request(app)
         .get('/v1/alerts/1')

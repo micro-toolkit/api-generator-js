@@ -53,22 +53,19 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client list action', function(){
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
       target.collection(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.called;
     });
 
     it('should call micro client with limit and offset defaults', function(){
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
       target.collection(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
     });
 
     it('should call micro client with request limit and offset', function(){
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
       req.query.limit = 2;
       req.query.offset = 1;
       target.collection(metadata.v1.task)(req, res, next);
@@ -76,8 +73,7 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client with request limit and offset as integers', function() {
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
       req.query.limit = '2';
       req.query.offset = '1';
       target.collection(metadata.v1.task)(req, res, next);
@@ -85,8 +81,7 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client with default limit and offset when request limit and offset are NaN', function() {
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
       req.query.limit = 'foo';
       req.query.offset = 'bar';
       target.collection(metadata.v1.task)(req, res, next);
@@ -94,8 +89,7 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client with request query string data', function(){
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
       req.query.unread = true;
       target.collection(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.calledWith({
@@ -106,8 +100,7 @@ describe('Handlers Generators', function(){
     it('should set json response on successfull call', function(done){
       var task = { id: '1', userId: '99', active: true };
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves([task]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      sinon.stub(clientStub, 'list').resolves({payload: [task]});
       // TODO: this isnt working with spy.should.have.been.called
       res.json = function(data){
         data.should.be.deep.equal([model]);
@@ -119,8 +112,7 @@ describe('Handlers Generators', function(){
     it('should execute next handler', function(done){
       var task = { id: '1', userId: '99', active: true };
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves([task]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      sinon.stub(clientStub, 'list').resolves({payload: [task]});
       // TODO: use sinon chai and spy
       var spy = done;
       target.collection(metadata.v1.task)(req, res, spy);
@@ -128,16 +120,14 @@ describe('Handlers Generators', function(){
 
     describe('excluding query string parameters from payload', function(){
       it('should call micro client without token', function(){
-        var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
         req.query.token = 'secretToken';
         target.collection(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
       });
 
       it('should call micro client without access_token', function(){
-        var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
         req.query.access_token = 'secretToken';
         target.collection(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
@@ -147,8 +137,7 @@ describe('Handlers Generators', function(){
       function(){
         config.runtimeConfig.excludeQueryString = 'other';
         target = require('../lib/handlers')(config);
-        var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
         req.query.other = 'other';
         target.collection(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
@@ -160,7 +149,7 @@ describe('Handlers Generators', function(){
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
-        actionStub = sinon.stub(clientStub, 'list').resolves();
+        actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
         req.user = { userId: '1', tenantId: '1' };
       });
 
@@ -226,15 +215,15 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client get action', function(){
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'get').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'get')
+        .resolves({payload: task});
       target.getResource(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.called;
     });
 
     it('should call micro client with request id parameter', function(){
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'get').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'get')
+        .resolves({payload: task});
       req.params.id = '1';
       target.getResource(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.calledWith({id:'1'});
@@ -243,7 +232,8 @@ describe('Handlers Generators', function(){
     describe('when metadata with current user', function () {
       it('should call micro client with current user key', function(){
         var user = { id: '1', name: 'something' };
-        var actionStub = sinon.stub(clientStub, 'get').resolves(user);
+        var actionStub = sinon.stub(clientStub, 'get')
+          .resolves({payload: user});
         req.user = { userId: '1' };
         target.getResource(metadata.v1.me)(req, res, next);
         actionStub.should.have.been.calledWith({id:'1'});
@@ -252,8 +242,7 @@ describe('Handlers Generators', function(){
 
     it('should set json response on successfull call', function(done){
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'get').returns(stub());
+      sinon.stub(clientStub, 'get').resolves({payload: task});
       // TODO: this isnt working with spy.should.have.been.called
       res.json = function(data){
         data.should.be.deep.equal(model);
@@ -264,8 +253,7 @@ describe('Handlers Generators', function(){
 
     it('should execute next handler', function(done){
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'get').returns(stub());
+      sinon.stub(clientStub, 'get').resolves({payload: task});
       // TODO: use sinon chai and spy
       var spy = done;
       target.getResource(metadata.v1.task)(req, res, spy);
@@ -277,7 +265,8 @@ describe('Handlers Generators', function(){
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
-        actionStub = sinon.stub(clientStub, 'get').resolves(task);
+        actionStub = sinon.stub(clientStub, 'get')
+          .resolves({payload: task});
         req.user = { userId: '1', tenantId: '1' };
       });
 
@@ -343,23 +332,23 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client create action', function(){
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'create').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'create')
+        .resolves({payload: task});
       target.createResource(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.called;
     });
 
     it('should call micro client with request model data', function(){
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'create').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'create')
+        .resolves({payload: task});
       req.body = { userId: '99', active: true };
       target.createResource(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.calledWith({ userId: '99', active: true });
     });
 
     it('should call micro client with request model data excluding non model data', function(){
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'create').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'create')
+        .resolves({payload: task});
       req.body = { userId: '99', active: true, something: true };
       target.createResource(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.calledWith({ userId: '99', active: true });
@@ -367,8 +356,7 @@ describe('Handlers Generators', function(){
 
     it('should set json response on successfull call', function(done){
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'create').returns(stub());
+      sinon.stub(clientStub, 'create').resolves({payload: task});
       // TODO: this isnt working with spy.should.have.been.called
       res.json = function(data){
         data.should.be.deep.equal(model);
@@ -379,8 +367,7 @@ describe('Handlers Generators', function(){
 
     it('should execute next handler', function(done){
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'create').returns(stub());
+      sinon.stub(clientStub, 'create').resolves({payload: task});
       // TODO: use sinon chai and spy
       var spy = done;
       target.createResource(metadata.v1.task)(req, res, spy);
@@ -392,7 +379,8 @@ describe('Handlers Generators', function(){
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
-        actionStub = sinon.stub(clientStub, 'create').resolves(task);
+        actionStub = sinon.stub(clientStub, 'create')
+          .resolves({payload: task});
         req.user = { userId: '1', tenantId: '1' };
       });
 
@@ -458,15 +446,15 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client update action', function(){
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'update').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'update')
+        .resolves({payload: task});
       target.updateResource(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.called;
     });
 
     it('should call micro client with request model data', function(){
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'update').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'update')
+        .resolves({payload: task});
       req.params.id = '1';
       req.body = { userId: '99', active: true };
       target.updateResource(metadata.v1.task)(req, res, next);
@@ -475,8 +463,8 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client with id from resource path', function(){
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'update').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'update')
+        .resolves({payload: task});
       req.params.id = '1';
       req.body = { id: '2', userId: '99', active: true };
       target.updateResource(metadata.v1.task)(req, res, next);
@@ -485,8 +473,8 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client with request model data excluding non model data', function(){
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'update').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'update')
+        .resolves({payload: task});
       req.params.id = '1';
       req.body = { userId: '99', active: true, something: true };
       target.updateResource(metadata.v1.task)(req, res, next);
@@ -496,8 +484,7 @@ describe('Handlers Generators', function(){
 
     it('should set json response on successfull call', function(done){
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'update').returns(stub());
+      sinon.stub(clientStub, 'update').resolves({payload: task});
       // TODO: this isnt working with spy.should.have.been.called
       res.json = function(data){
         data.should.be.deep.equal(model);
@@ -508,8 +495,7 @@ describe('Handlers Generators', function(){
 
     it('should execute next handler', function(done){
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves(task);
-      var actionStub = sinon.stub(clientStub, 'update').returns(stub());
+      sinon.stub(clientStub, 'update').resolves({payload: task});
       // TODO: use sinon chai and spy
       var spy = done;
       target.updateResource(metadata.v1.task)(req, res, spy);
@@ -521,7 +507,8 @@ describe('Handlers Generators', function(){
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
-        actionStub = sinon.stub(clientStub, 'update').resolves(task);
+        actionStub = sinon.stub(clientStub, 'update')
+          .resolves({payload: task});
         req.user = { userId: '1', tenantId: '1' };
       });
 
@@ -581,23 +568,23 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client remove action', function(){
-      var stub = sinon.stub().resolves();
-      var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'remove')
+        .resolves({payload: null});
       target.removeResource(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.called;
     });
 
     it('should call micro client with request id parameter', function(){
-      var stub = sinon.stub().resolves();
-      var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'remove')
+        .resolves({payload: null});
       req.params.id = '1';
       target.removeResource(metadata.v1.task)(req, res, next);
       actionStub.should.have.been.calledWith({id:'1'});
     });
 
     it('should return no content status code', function(done){
-      var stub = sinon.stub().resolves();
-      var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'remove')
+        .resolves({payload: null, status: 204});
       res.sendStatus = function (status) {
         status.should.be.equal(204);
         done();
@@ -606,8 +593,7 @@ describe('Handlers Generators', function(){
     });
 
     it('should execute next handler', function(done){
-      var stub = sinon.stub().resolves();
-      var actionStub = sinon.stub(clientStub, 'remove').returns(stub());
+      sinon.stub(clientStub, 'remove').resolves({payload: null});
       // TODO: use sinon chai and spy
       var spy = done;
       target.removeResource(metadata.v1.task)(req, res, spy);
@@ -619,12 +605,12 @@ describe('Handlers Generators', function(){
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
-        actionStub = sinon.stub(clientStub, 'remove').resolves();
+        actionStub = sinon.stub(clientStub, 'remove')
+          .resolves({payload: null});
         req.user = { userId: '1', tenantId: '1' };
       });
 
       it('should call micro client with claims on headers', function(){
-        var stub = sinon.stub().resolves();
         target.removeResource(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith(
           sinon.match.any, sinon.match({ userId: '1', tenantId: '1' })
@@ -680,15 +666,15 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client list action', function(){
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list')
+        .resolves({payload: []});
       target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
       actionStub.should.have.been.called;
     });
 
     it('should call micro client with resource foreign key', function(){
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list')
+        .resolves({payload: []});
       req.params.id = '1';
       target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
       actionStub.should.have.been.calledWith(sinon.match({ userId: '1' }));
@@ -696,7 +682,8 @@ describe('Handlers Generators', function(){
 
     describe('when parent metadata with current user', function () {
       it('should call micro client with current user key', function(){
-        var actionStub = sinon.stub(clientStub, 'list').resolves([]);
+        var actionStub = sinon.stub(clientStub, 'list')
+          .resolves({payload: []});
         req.user = { userId: '1' };
         target.resourceRelation(metadata.v1.me.relations[0])(req, res, next);
         actionStub.should.have.been.calledWith(sinon.match({ userId: '1' }));
@@ -704,15 +691,15 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client with limit and offset defaults', function(){
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list')
+        .resolves({payload: []});
       target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
       actionStub.should.have.been.calledWith(sinon.match({ limit: 10, offset: 0 }));
     });
 
     it('should call micro client with request limit and offset', function(){
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list')
+        .resolves({payload: []});
       req.query.limit = 2;
       req.query.offset = 1;
       target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
@@ -721,8 +708,8 @@ describe('Handlers Generators', function(){
     });
 
     it('should call micro client with request query string data', function(){
-      var stub = sinon.stub().resolves([]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      var actionStub = sinon.stub(clientStub, 'list')
+        .resolves({payload: []});
       req.query.unread = true;
       target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
       actionStub.should.have.been.calledWith(sinon.match({ unread: true }));
@@ -731,8 +718,7 @@ describe('Handlers Generators', function(){
     it('should set json response on successfull call', function(done){
       var task = { id: '1', userId: '99', active: true };
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves([task]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      sinon.stub(clientStub, 'list').resolves({payload: [task]});
       // TODO: this isnt working with spy.should.have.been.called
       res.json = function(data){
         data.should.be.deep.equal([model]);
@@ -744,8 +730,7 @@ describe('Handlers Generators', function(){
     it('should execute next handler', function(done){
       var task = { id: '1', userId: '99', active: true };
       var model = Model(config, metadata.v1.task)(task);
-      var stub = sinon.stub().resolves([task]);
-      var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+      sinon.stub(clientStub, 'list').resolves({payload: [task]});
       // TODO: use sinon chai and spy
       var spy = done;
       target.resourceRelation(metadata.v1.user.relations[0])(req, res, spy);
@@ -753,8 +738,8 @@ describe('Handlers Generators', function(){
 
     describe('excluding query string parameters from payload', function(){
       it('should call micro client without token', function(){
-        var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list')
+          .resolves({payload: []});
         req.query.token = 'secretToken';
         target.collection(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
@@ -764,8 +749,8 @@ describe('Handlers Generators', function(){
       function(){
         config.runtimeConfig.excludeQueryString = 'other';
         target = require('../lib/handlers')(config);
-        var stub = sinon.stub().resolves([]);
-        var actionStub = sinon.stub(clientStub, 'list').returns(stub());
+        var actionStub = sinon.stub(clientStub, 'list')
+                .resolves({payload: []});
         req.query.other = 'other';
         target.collection(metadata.v1.task)(req, res, next);
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
@@ -778,7 +763,7 @@ describe('Handlers Generators', function(){
       beforeEach(function(){
         config.runtimeConfig.claims = 'userId,tenantId';
         target = require('../lib/handlers')(config);
-        actionStub = sinon.stub(clientStub, 'list').resolves([]);
+        actionStub = sinon.stub(clientStub, 'list').resolves({payload: []});
         req.user = { userId: '1', tenantId: '1' };
       });
 
@@ -843,7 +828,7 @@ describe('Handlers Generators', function(){
     it('should call micro client activate action', function(){
       var actionStub = sinon.stub(clientStub, 'call')
         .withArgs('activate')
-        .resolves();
+        .resolves({payload: null});
 
       var action = metadata.v1.user.actions[1];
       target.nonStandardAction(metadata.v1.user, action)(req, res, next);
@@ -853,7 +838,7 @@ describe('Handlers Generators', function(){
     it('should call micro client with id on payload', function(){
       var actionStub = sinon.stub(clientStub, 'call')
         .withArgs('activate', {id:'1'})
-        .resolves();
+        .resolves({payload: null});
 
       var action = metadata.v1.user.actions[1];
       target.nonStandardAction(metadata.v1.user, action)(req, res, next);
@@ -863,7 +848,7 @@ describe('Handlers Generators', function(){
     it('should call micro client with allowed property on payload', function(){
       var actionStub = sinon.stub(clientStub, 'call')
         .withArgs('action', sinon.match({prop: true}))
-        .resolves();
+        .resolves({payload: null});
 
       req.body = { prop: true };
       var action = { httpVerb: 'put', name: 'action', verb: 'action', allow: ['prop'] };
@@ -877,7 +862,7 @@ describe('Handlers Generators', function(){
       beforeEach(function () {
         actionStub = sinon.stub(clientStub, 'call')
           .withArgs('activate', {id:'1'})
-          .resolves(stubs.user);
+          .resolves({payload: stubs.user});
         action = metadata.v1.user.actions[1];
       });
 
@@ -896,7 +881,7 @@ describe('Handlers Generators', function(){
         beforeEach(function () {
           clientStub.call.restore();
           actionStub = sinon.stub(clientStub, 'call')
-            .resolves([stubs.alert]);
+            .resolves({payload: [stubs.alert]});
         });
 
         it('should set json response', function(done){
@@ -924,13 +909,21 @@ describe('Handlers Generators', function(){
       beforeEach(function () {
         actionStub = sinon.stub(clientStub, 'call')
           .withArgs('deactivate', {id:'1'})
-          .resolves();
+          .resolves({payload: null, status: 204});
         action = metadata.v1.user.actions[2];
       });
 
       it('should not set content', function(){
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
         res.json.should.not.have.been.called;
+      });
+
+      it('should send status code', function(done){
+        res.sendStatus = function (status) {
+          status.should.be.equal(204);
+          done();
+        }
+        target.nonStandardAction(metadata.v1.user, action)(req, res, next);
       });
 
       it('should execute next handler', function(done){
@@ -949,7 +942,7 @@ describe('Handlers Generators', function(){
         req.user = { userId: '1', tenantId: '1' };
         actionStub = sinon.stub(clientStub, 'call')
           .withArgs('activate')
-          .resolves();
+          .resolves({payload: null});
 
         action = metadata.v1.user.actions[1];
       });
