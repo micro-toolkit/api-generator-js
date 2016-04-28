@@ -584,7 +584,7 @@ describe('Handlers Generators', function(){
 
     it('should return no content status code', function(done){
       var actionStub = sinon.stub(clientStub, 'remove')
-        .resolves({payload: null});
+        .resolves({payload: null, status: 204});
       res.sendStatus = function (status) {
         status.should.be.equal(204);
         done();
@@ -909,13 +909,21 @@ describe('Handlers Generators', function(){
       beforeEach(function () {
         actionStub = sinon.stub(clientStub, 'call')
           .withArgs('deactivate', {id:'1'})
-          .resolves({payload: null});
+          .resolves({payload: null, status: 204});
         action = metadata.v1.user.actions[2];
       });
 
       it('should not set content', function(){
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
         res.json.should.not.have.been.called;
+      });
+
+      it('should send status code', function(done){
+        res.sendStatus = function (status) {
+          status.should.be.equal(204);
+          done();
+        }
+        target.nonStandardAction(metadata.v1.user, action)(req, res, next);
       });
 
       it('should execute next handler', function(done){

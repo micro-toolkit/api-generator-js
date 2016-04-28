@@ -103,7 +103,7 @@ describe('Integration: Tasks Endpoints', function(){
     it('return no content', function(done){
       sinon.stub(clientStub, 'remove')
         .withArgs({id:'1'})
-        .resolves({payload: stubs.task});
+        .resolves({payload: stubs.task, status: 204});
 
       request(app)
         .delete('/v1/tasks/1')
