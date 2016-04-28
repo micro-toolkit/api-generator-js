@@ -29,7 +29,7 @@ describe('Integration: Me Endpoints', function(){
     it('return a model', function(done){
       sinon.stub(clientStub, 'get')
         .withArgs(sinon.match({ id: 'pjanuario' }))
-        .resolves(stubs.user);
+        .resolves({payload: stubs.user});
 
       request(app)
         .get('/v1/me')

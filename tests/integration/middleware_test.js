@@ -29,7 +29,7 @@ describe('Middleware', function(){
     it('should return a model with specified fields only', function(done){
       sinon.stub(clientStub, 'get')
         .withArgs({id:'pjanuario'})
-        .resolves(stubs.user);
+        .resolves({payload: stubs.user});
 
       request(app)
         .get('/v1/users/pjanuario?fields=id,name')

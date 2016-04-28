@@ -27,8 +27,8 @@ describe('Integration: Tasks Endpoints', function(){
     });
 
     it('return a collection', function(done){
-      var stub = sinon.stub().resolves([stubs.task]);
-      sinon.stub(clientStub, 'list').returns(stub());
+      sinon.stub(clientStub, 'list')
+        .resolves({payload: [stubs.task]});
 
       request(app)
         .get('/v1/tasks')
@@ -41,7 +41,7 @@ describe('Integration: Tasks Endpoints', function(){
     it('return a collection with offset and limit', function(done){
       sinon.stub(clientStub, 'list')
         .withArgs({limit: 1, offset: 2})
-        .resolves([stubs.task]);
+        .resolves({payload: [stubs.task]});
 
       request(app)
         .get('/v1/tasks?offset=2&limit=1')
@@ -82,10 +82,9 @@ describe('Integration: Tasks Endpoints', function(){
     });
 
     it('return a model resource', function(done){
-      var stub = sinon.stub().resolves(stubs.task);
       sinon.stub(clientStub, 'get')
         .withArgs({id:'1'})
-        .returns(stub());
+        .resolves({payload: stubs.task});
 
       request(app)
         .get('/v1/tasks/1')
@@ -104,7 +103,7 @@ describe('Integration: Tasks Endpoints', function(){
     it('return no content', function(done){
       sinon.stub(clientStub, 'remove')
         .withArgs({id:'1'})
-        .resolves(stubs.task);
+        .resolves({payload: stubs.task});
 
       request(app)
         .delete('/v1/tasks/1')
@@ -118,10 +117,9 @@ describe('Integration: Tasks Endpoints', function(){
     });
 
     it('return a collection', function(done){
-      var stub = sinon.stub().resolves([stubs.task]);
       sinon.stub(clientStub, 'list')
         .withArgs(sinon.match({ userId: '1' }))
-        .returns(stub());
+        .resolves({payload: [stubs.task]});
 
       request(app)
         .get('/v1/users/1/tasks')
