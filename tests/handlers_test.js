@@ -933,6 +933,25 @@ describe('Handlers Generators', function(){
       });
     });
 
+    describe('on call with a custom specified response code', function () {
+      var actionStub, action;
+
+      beforeEach(function () {
+        actionStub = sinon.stub(clientStub, 'call')
+          .withArgs('deactivate', {id:'1'})
+          .resolves({payload: stubs.user, status: 202});
+        action = metadata.v1.user.actions[2];
+      })
+
+      it('should return the status code it received in the response', function (done) {
+        res.status = function (status) {
+          status.should.be.eql(202);
+          done();
+        }
+        target.nonStandardAction(metadata.v1.user, action)(req, res, next);
+      });
+    });
+
     describe('forwarding claims when configured', function(){
       var actionStub, action;
 
