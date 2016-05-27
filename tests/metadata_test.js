@@ -232,6 +232,20 @@ describe('metadata', function(){
         target('v1', 'task', metadata).relations[0]
           .should.have.property('modelFk', 'userId');
       });
+
+      it('should have count as default false', function(){
+        var relation = { type: 'collection', name: 'tasks' };
+        var metadata = { relations: [ relation ] };
+        target('v1', 'user', metadata).relations[0]
+          .should.have.property('count', false);
+      });
+
+      it('should have count as true', function(){
+        var relation = { type: 'collection', name: 'tasks', count: true };
+        var metadata = { relations: [ relation ] };
+        target('v1', 'user', metadata).relations[0]
+          .should.have.property('count', true);
+      });
     });
   });
 
