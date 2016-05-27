@@ -163,6 +163,20 @@ describe('metadata', function(){
     });
 
     describe('on loading relation', function(){
+      it('should set relation type', function(){
+        var relation = { type: 'resource', name: 'user' };
+        var metadata = { relations: [ relation ] };
+        target('v1', 'task', metadata).relations[0]
+          .should.have.property('type', 'resource');
+      });
+
+      it('should set relation name', function(){
+        var relation = { type: 'resource', name: 'user' };
+        var metadata = { relations: [ relation ] };
+        target('v1', 'task', metadata).relations[0]
+          .should.have.property('name', 'user');
+      });
+
       it('should set relation version', function(){
         var relation = { type: 'resource', name: 'user' };
         var metadata = { relations: [ relation ] };
@@ -217,6 +231,20 @@ describe('metadata', function(){
         var metadata = { relations: [ relation ] };
         target('v1', 'task', metadata).relations[0]
           .should.have.property('modelFk', 'userId');
+      });
+
+      it('should have count as default false', function(){
+        var relation = { type: 'collection', name: 'tasks' };
+        var metadata = { relations: [ relation ] };
+        target('v1', 'user', metadata).relations[0]
+          .should.have.property('count', false);
+      });
+
+      it('should have count as true', function(){
+        var relation = { type: 'collection', name: 'tasks', count: true };
+        var metadata = { relations: [ relation ] };
+        target('v1', 'user', metadata).relations[0]
+          .should.have.property('count', true);
       });
     });
   });

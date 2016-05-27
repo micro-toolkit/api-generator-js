@@ -70,6 +70,25 @@ describe('paths', function(){
     });
   });
 
+  describe('#resourceRelationCount', function(){
+    it('should throw a error when relation resource path', function(){
+      var relation = metadata.v1.task.relations[0];
+      (function(){
+        target.resourceRelationCount(relation);
+      }).should.throw(Error, /Not supported/);
+    });
+
+    it('should return a relation count path', function(){
+      var relation = metadata.v1.user.relations[0];
+      target.resourceRelationCount(relation).should.be.eql('/v1/users/:id/tasks/count');
+    });
+
+    it('should return a relation count path without identifier', function(){
+      var relation = metadata.v1.me.relations[0];
+      target.resourceRelationCount(relation).should.be.eql('/v1/me/alerts/count');
+    });
+  });
+
   describe('#nonStandardAction', function(){
     it('should return a non standard action path', function(){
       var action = metadata.v1.user.actions[1];

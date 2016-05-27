@@ -130,4 +130,23 @@ describe('Integration: Tasks Endpoints', function(){
     });
   });
 
+  describe('GET /v1/users/1/tasks/count', function(){
+    afterEach(function(){
+      clientStub.count.restore();
+    });
+
+    it('return a collection', function(done){
+      sinon.stub(clientStub, 'count')
+        .withArgs(sinon.match({ userId: '1' }))
+        .resolves({payload: 1});
+
+      request(app)
+        .get('/v1/users/1/tasks/count')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .expect({ count: 1 })
+        .end(done);
+    });
+  });
+
 });

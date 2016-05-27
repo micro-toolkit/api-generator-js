@@ -14,7 +14,8 @@ function init(){
     list: nop,
     create: nop,
     update: nop,
-    remove: nop
+    remove: nop,
+    count: nop
   };
   sinon.stub(client, 'init').returns(clientStub);
   return clientStub;

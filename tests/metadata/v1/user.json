@@ -1,7 +1,7 @@
 {
   "properties": [ "id", "name", "active", "roleId" ],
   "relations": [
-    { "name": "tasks", "type": "collection" },
+    { "name": "tasks", "type": "collection", "count": true },
     { "name": "userAssignments", "type": "collection" },
     { "name": "role", "type": "resource" }
   ],
