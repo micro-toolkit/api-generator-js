@@ -163,6 +163,20 @@ describe('metadata', function(){
     });
 
     describe('on loading relation', function(){
+      it('should set relation type', function(){
+        var relation = { type: 'resource', name: 'user' };
+        var metadata = { relations: [ relation ] };
+        target('v1', 'task', metadata).relations[0]
+          .should.have.property('type', 'resource');
+      });
+
+      it('should set relation name', function(){
+        var relation = { type: 'resource', name: 'user' };
+        var metadata = { relations: [ relation ] };
+        target('v1', 'task', metadata).relations[0]
+          .should.have.property('name', 'user');
+      });
+
       it('should set relation version', function(){
         var relation = { type: 'resource', name: 'user' };
         var metadata = { relations: [ relation ] };
