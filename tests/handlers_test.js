@@ -148,7 +148,7 @@ describe('Handlers Generators', function(){
     describe('forwarding claims when configured', function(){
       var actionStub;
       beforeEach(function(){
-        config.runtimeConfig.claims = 'userId,tenantId';
+        config.runtimeConfig.claims = ['userId','tenantId'];
         target = require('../lib/handlers')(config);
         actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
         req.user = { userId: '1', tenantId: '1' };
@@ -264,7 +264,7 @@ describe('Handlers Generators', function(){
       var actionStub;
 
       beforeEach(function(){
-        config.runtimeConfig.claims = 'userId,tenantId';
+        config.runtimeConfig.claims = ['userId','tenantId'];
         target = require('../lib/handlers')(config);
         actionStub = sinon.stub(clientStub, 'get')
           .resolves({payload: task});
@@ -378,7 +378,7 @@ describe('Handlers Generators', function(){
       var actionStub;
 
       beforeEach(function(){
-        config.runtimeConfig.claims = 'userId,tenantId';
+        config.runtimeConfig.claims = ['userId','tenantId'];
         target = require('../lib/handlers')(config);
         actionStub = sinon.stub(clientStub, 'create')
           .resolves({payload: task});
@@ -506,7 +506,7 @@ describe('Handlers Generators', function(){
       var actionStub;
 
       beforeEach(function(){
-        config.runtimeConfig.claims = 'userId,tenantId';
+        config.runtimeConfig.claims = ['userId','tenantId'];
         target = require('../lib/handlers')(config);
         actionStub = sinon.stub(clientStub, 'update')
           .resolves({payload: task});
@@ -604,7 +604,7 @@ describe('Handlers Generators', function(){
       var actionStub;
 
       beforeEach(function(){
-        config.runtimeConfig.claims = 'userId,tenantId';
+        config.runtimeConfig.claims = ['userId','tenantId'];
         target = require('../lib/handlers')(config);
         actionStub = sinon.stub(clientStub, 'remove')
           .resolves({payload: null});
@@ -720,7 +720,7 @@ describe('Handlers Generators', function(){
       var actionStub;
 
       beforeEach(function(){
-        config.runtimeConfig.claims = 'userId,tenantId';
+        config.runtimeConfig.claims = ['userId','tenantId'];
         target = require('../lib/handlers')(config);
         actionStub = sinon.stub(clientStub, 'count').resolves({payload: 0});
         req.user = { userId: '1', tenantId: '1' };
@@ -877,7 +877,7 @@ describe('Handlers Generators', function(){
       var actionStub;
 
       beforeEach(function(){
-        config.runtimeConfig.claims = 'userId,tenantId';
+        config.runtimeConfig.claims = ['userId','tenantId'];
         target = require('../lib/handlers')(config);
         actionStub = sinon.stub(clientStub, 'list').resolves({payload: []});
         req.user = { userId: '1', tenantId: '1' };
@@ -1072,7 +1072,7 @@ describe('Handlers Generators', function(){
       var actionStub, action;
 
       beforeEach(function(){
-        config.runtimeConfig.claims = 'userId,tenantId';
+        config.runtimeConfig.claims = ['userId','tenantId'];
         target = require('../lib/handlers')(config);
         req.user = { userId: '1', tenantId: '1' };
         actionStub = sinon.stub(clientStub, 'call')

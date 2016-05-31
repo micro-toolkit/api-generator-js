@@ -36,11 +36,12 @@ function loadVersion(memo, versionMetadata, version) {
 }
 
 function loadConfigs(config) {
-  // TODO: Add unit/integration tests for this loadings and defaults 
+  // TODO: Add unit/integration tests for this loadings and defaults
   var conf = _.cloneDeep(config);
   var runtimeConf = config.runtimeConfig;
   var excludeQs = runtimeConf.excludeQueryString || 'token,access_token';
   runtimeConf.excludeQueryString = excludeQs.split(',');
+  runtimeConf.claims = (runtimeConf.claims || '').split(',');
   return conf;
 }
 
