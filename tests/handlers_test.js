@@ -27,7 +27,8 @@ describe('Handlers Generators', function(){
     config = {
       runtimeConfig: {
         baseUrl: 'http://test',
-        documentationUrl: 'http://test#docs'
+        documentationUrl: 'http://test#docs',
+        excludeQueryString: ['token', 'access_token']
       },
       metadata: metadata
     };
@@ -135,7 +136,7 @@ describe('Handlers Generators', function(){
 
       it('should call micro client without excluded query string params',
       function(){
-        config.runtimeConfig.excludeQueryString = 'other';
+        config.runtimeConfig.excludeQueryString = ['other'];
         target = require('../lib/handlers')(config);
         var actionStub = sinon.stub(clientStub, 'list').resolves({payload:[]});
         req.query.other = 'other';
@@ -862,7 +863,7 @@ describe('Handlers Generators', function(){
 
       it('should call micro client without excluded query string params',
       function(){
-        config.runtimeConfig.excludeQueryString = 'other';
+        config.runtimeConfig.excludeQueryString = ['other'];
         target = require('../lib/handlers')(config);
         var actionStub = sinon.stub(clientStub, 'list')
                 .resolves({payload: []});

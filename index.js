@@ -35,23 +35,35 @@ function loadVersion(memo, versionMetadata, version) {
   return memo;
 }
 
+function loadConfigs(config) {
+  // TODO: Add unit/integration tests for this loadings and defaults 
+  var conf = _.cloneDeep(config);
+  var runtimeConf = config.runtimeConfig;
+  var excludeQs = runtimeConf.excludeQueryString || 'token,access_token';
+  runtimeConf.excludeQueryString = excludeQs.split(',');
+  return conf;
+}
+
 function apiRouter(config){
   var router = express.Router();
   router.use(requestIdMiddleware);
   router.use(partialResponseMiddleware());
 
+  // load configs
+  var conf = loadConfigs(config);
+
   // load models
   log.info('Loading API Models...');
-  config.metadata = _.reduce(config.metadata, loadVersion, {});
+  config.metadata = _.reduce(conf.metadata, loadVersion, {});
   log.info('Loaded API Models...');
 
   // loading routes
   log.info('Loading API routes...');
-  Object.keys(config.metadata).forEach(function(version){
-    var versionMetadata = config.metadata[version];
+  Object.keys(conf.metadata).forEach(function(version){
+    var versionMetadata = conf.metadata[version];
     Object.keys(versionMetadata).forEach(function(modelName){
       var metadata = versionMetadata[modelName];
-      router = loadingRoutes(router, metadata, config);
+      router = loadingRoutes(router, metadata, conf);
     });
   });
   log.info('Loaded API routes...');
