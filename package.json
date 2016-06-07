@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && NODE_ENV=test istanbul cover _mocha -- tests/* -R spec",
-    "lint": "jshint lib/*.js *.js tests/**/*.js"
+    "lint": "jshint lib/**/*.js *.js tests/**/*.js"
   },
   "author": "Pedro Januário <prnjanuario@gmail.com>",
   "license": "ISC",
