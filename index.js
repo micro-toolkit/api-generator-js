@@ -5,7 +5,7 @@ var express = require('express'),
     metadataLoader = require('./lib/metadata'),
     partialResponseMiddleware = require('express-partial-response'),
     Logger = require('./logger'),
-    log = Logger.getLogger('API::METADATA');
+    log = Logger.getLogger('micro.api.metadata');
 
 function loadingRoutes(router, modelData, config){
   routes(config, modelData).map(function(route){
