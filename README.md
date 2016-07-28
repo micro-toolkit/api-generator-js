@@ -207,16 +207,16 @@ As an example we can have the following model configuration (metadata from api-e
 
 This will generate the following routes:
 
-    API::METADATA::INFO - Loaded API Models...
-    API::METADATA::INFO - Loading API routes...
-    API::METADATA::INFO - Mount route GET     /v1/users/:userId/roles
-    API::METADATA::INFO - Mount route GET     /v1/users/:userId/roles/:id
-    API::METADATA::INFO - Mount route POST    /v1/users/:userId/roles
-    API::METADATA::INFO - Mount route PUT     /v1/users/:userId/roles/:id
-    API::METADATA::INFO - Mount route DELETE  /v1/users/:userId/roles/:id
+    MICRO.API.METADATA::INFO - Loaded API Models...
+    MICRO.API.METADATA::INFO - Loading API routes...
+    MICRO.API.METADATA::INFO - Mount route GET     /v1/users/:userId/roles
+    MICRO.API.METADATA::INFO - Mount route GET     /v1/users/:userId/roles/:id
+    MICRO.API.METADATA::INFO - Mount route POST    /v1/users/:userId/roles
+    MICRO.API.METADATA::INFO - Mount route PUT     /v1/users/:userId/roles/:id
+    MICRO.API.METADATA::INFO - Mount route DELETE  /v1/users/:userId/roles/:id
     ...
-    API::METADATA::INFO - Loaded API routes...
-    API::INFO - Server running on port 8081
+    MICRO.API.METADATA::INFO - Loaded API routes...
+    MICRO.API::INFO - Server running on port 8081
 
 The parameters `userId` and `id`(on resource endpoints only) will be sent to service on payload.
 
@@ -239,9 +239,9 @@ As an example we can have the following model configuration (metadata from api-e
 
 This will generate the following routes:
 
-    API::METADATA::INFO - Loaded API Models...
-    API::METADATA::INFO - Loading API routes...
-    API::METADATA::INFO - Mount route GET 	/v1/admin/claims
+    MICRO.API.METADATA::INFO - Loaded API Models...
+    MICRO.API.METADATA::INFO - Loading API routes...
+    MICRO.API.METADATA::INFO - Mount route GET 	/v1/admin/claims
 
 ## Overriding default paths
 
