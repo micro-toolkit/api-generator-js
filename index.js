@@ -24,7 +24,7 @@ function loadingRoutes(router, modelData, config){
 function loadModel(version, versionMetadata){
   return _.reduce(versionMetadata, function(memo, metadata, modelName){
     var modelData = metadataLoader(version, modelName, metadata);
-    log.info('Model \'%s\': %j', modelName, modelData);
+    log.trace('Model \'%s\': %j', modelName, modelData);
     memo[modelName] = modelData;
     return memo;
  }, {});
