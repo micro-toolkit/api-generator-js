@@ -9,7 +9,7 @@ var express = require('express'),
 
 function loadingRoutes(router, modelData, config){
   routes(config, modelData).map(function(route){
-    log.debug('Mount route %s \t%s', route.verb.toUpperCase(), route.path);
+    log.trace('Mount route %s \t%s', route.verb.toUpperCase(), route.path);
 
     if (route.middleware) {
       router[route.verb](route.path, route.middleware, route.handler);
