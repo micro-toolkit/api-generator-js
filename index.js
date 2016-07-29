@@ -38,7 +38,7 @@ function loadVersion(memo, versionMetadata, version) {
 function loadConfigs(config) {
   // TODO: Add unit/integration tests for this loadings and defaults
   var conf = _.cloneDeep(config);
-  var runtimeConf = config.runtimeConfig;
+  var runtimeConf = conf.runtimeConfig;
   var excludeQs = runtimeConf.excludeQueryString || 'token,access_token';
   runtimeConf.excludeQueryString = excludeQs.split(',');
   runtimeConf.claims = (runtimeConf.claims || '').split(',');
@@ -55,7 +55,7 @@ function apiRouter(config){
 
   // load models
   log.info('Loading API Models...');
-  config.metadata = _.reduce(conf.metadata, loadVersion, {});
+  conf.metadata = _.reduce(conf.metadata, loadVersion, {});
   log.info('Loaded API Models...');
 
   // loading routes
