@@ -663,7 +663,15 @@ describe('Handlers Generators', function(){
 
   describe('#resourceRelationCount', function(){
     afterEach(function(){
-      clientStub.count.restore();
+      if(clientStub.count.restore) { clientStub.count.restore(); }
+    });
+
+    it('should init the proper micro client', function(){
+      var client = require('../lib/client');
+      var spy = client.init;
+      var expected = metadata.v1.task;
+      target.resourceRelationCount(metadata.v1.user.relations[0]);
+      spy.should.have.been.calledWith('task', sinon.match.any);
     });
 
     it('should call micro client count action', function(){
