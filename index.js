@@ -9,7 +9,7 @@ var express = require('express'),
 
 function loadingRoutes(router, modelData, config){
   routes(config, modelData).map(function(route){
-    log.info('Mount route %s \t%s', route.verb.toUpperCase(), route.path);
+    log.trace('Mount route %s \t%s', route.verb.toUpperCase(), route.path);
 
     if (route.middleware) {
       router[route.verb](route.path, route.middleware, route.handler);
@@ -24,7 +24,7 @@ function loadingRoutes(router, modelData, config){
 function loadModel(version, versionMetadata){
   return _.reduce(versionMetadata, function(memo, metadata, modelName){
     var modelData = metadataLoader(version, modelName, metadata);
-    log.info('Model \'%s\': %j', modelName, modelData);
+    log.trace('Model \'%s\': %j', modelName, modelData);
     memo[modelName] = modelData;
     return memo;
  }, {});
