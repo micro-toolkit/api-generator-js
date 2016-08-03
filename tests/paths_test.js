@@ -27,6 +27,20 @@ describe('paths', function(){
     });
   });
 
+  describe('#collectionCount', function(){
+    it('should return a pluralized collection count path', function(){
+      target.collectionCount(metadata.v1.task).should.be.eql('/v1/tasks/count');
+    });
+
+    it('should return a pluralized lower case collection count path', function(){
+      target.collectionCount(metadata.v1.userAssignment).should.be.eql('/v1/userassignments/count');
+    });
+
+    it('should return a prefixed collection count path', function(){
+      target.collectionCount(metadata.v1.claim).should.be.eql('/v1/admin/claims/count');
+    });
+  });
+
   describe('#resource', function(){
     it('should return a resource path', function(){
       target.resource(metadata.v1.task).should.be.eql('/v1/tasks/:id');

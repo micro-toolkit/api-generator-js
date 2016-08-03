@@ -11,10 +11,17 @@ function loadingRoutes(router, modelData, config){
   routes(config, modelData).map(function(route){
     log.trace('Mount route %s \t%s', route.verb.toUpperCase(), route.path);
 
+    // TODO: Include this in path module instead
+    // this was the only quick solution to avoid route clashes between
+    // resource get and collection count since the resource get uses wildcard
+    // that match everything both routes would be executed
+    // Related with https://github.com/micro-toolkit/api-generator-js/issues/103
+    var path = (route.verb !== 'get') ? route.path
+      : route.path.replace(new RegExp('/:id$'), '/:id(?!count)([\\-\\w]+)');
     if (route.middleware) {
-      router[route.verb](route.path, route.middleware, route.handler);
+      router[route.verb](path, route.middleware, route.handler);
     } else {
-      router[route.verb](route.path, route.handler);
+      router[route.verb](path, route.handler);
     }
   });
 

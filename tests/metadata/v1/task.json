@@ -6,5 +6,5 @@
       "type": "resource"
     }
   ],
-  "actions": ["list", "get", "create", "update", "remove"]
+  "actions": ["list", "get", "create", "update", "remove", "count"]
 }
