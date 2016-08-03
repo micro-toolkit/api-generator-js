@@ -33,7 +33,7 @@ var taskMetadata = {
       type: "resource"
     }
   ],
-  actions: ["list", "get", "create", "update", "remove"]
+  actions: ["list", "get", "create", "update", "remove", "count"]
 }
 ```
 
@@ -43,6 +43,7 @@ The list of actions will be translated into the following actions:
 * create: `POST /v1/tasks`
 * update: `PUT /v1/tasks/:id`
 * remove: `DELETE /v1/tasks/:id`
+* count:   `GET /v1/tasks/count`
 
 The relations will result on the following endpoints depending on the type:
 * resource:   `GET /v1/users/:id`
@@ -68,7 +69,7 @@ var metadata = {
           type: "resource"
         }
       ],
-      actions: ["list", "get", "create", "update", "remove"]
+      actions: ["list", "get", "create", "update", "remove", "count"]
     },
     user: {
       properties: [ "id", "name" ],
