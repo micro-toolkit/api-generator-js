@@ -114,6 +114,12 @@ describe('metadata', function(){
         var actual = target('v1', 'task', metadata).actions;
         actual.should.be.deep.equal(['remove']);
       });
+
+      it('should allow count action', function () {
+        var metadata = {actions: ['count'] };
+        var actual = target('v1', 'task', metadata).actions;
+        actual.should.be.deep.equal(['count']);
+      });
     });
 
     describe('with invalid action', function () {
