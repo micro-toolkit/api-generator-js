@@ -1,0 +1,8 @@
+{
+  "id": "red",
+  "userId": "1",
+  "_links": {
+    "self": null,
+    "user": "/users/1"
+  }
+}
