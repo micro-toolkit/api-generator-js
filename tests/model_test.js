@@ -59,6 +59,15 @@ describe('model', function(){
         actual._links.should.have.property('self', 'http://test/v1/users/pjanuario/roles/1');
       });
 
+      describe('which dont have a get action', function () {
+        it('should not set self link', function () {
+          var targetWithoutSelf = require('../lib/model')(config, metadata.v1.tag);
+          var actual = targetWithoutSelf({id: 'red', userId: '1'});
+          actual.should.have.property('_links');
+          actual._links.should.have.property('self', null);
+        });
+      });
+
       it('should set resource relation link', function(){
         var actual = target({ id: '1', name: 'Admin', userId: 'pjanuario'});
         actual.should.have.property('_links');
