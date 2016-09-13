@@ -151,14 +151,6 @@ describe('metadata', function(){
         }).to.throw(Error, /is invalid due to httpVerb/);
       });
 
-      it('should throw a error on invalid name', function () {
-        action.name = '';
-        var metadata = {actions: [action] };
-        expect(function(){
-          target('v1', 'task', metadata)
-        }).to.throw(Error, /is invalid due to name/);
-      });
-
       it('should throw a error on invalid verb', function () {
         action.verb = '';
         var metadata = {actions: [action] };
