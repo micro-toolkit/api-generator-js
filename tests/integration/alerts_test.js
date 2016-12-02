@@ -96,4 +96,23 @@ describe('Integration: Alerts Endpoints', function(){
         .end(done);
     });
   });
+
+  describe('PUT /v1/alerts/:id', function(){
+    afterEach(function(){
+      clientStub.call.restore();
+    });
+
+    it('return a model with different statys', function(done){
+      sinon.stub(clientStub, 'call')
+        .withArgs('overwritedefault', sinon.match({ id: '1' }), sinon.match.any)
+        .resolves({payload: stubs.alert, status: 202});
+
+      request(app)
+        .put('/v1/alerts/1')
+        .expect(202)
+        .expect('Content-Type', /json/)
+        .expect(blueprints.alert)
+        .end(done);
+    });
+  });
 });
