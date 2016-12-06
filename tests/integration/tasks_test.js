@@ -111,16 +111,23 @@ describe('Integration: Tasks Endpoints', function(){
     });
   });
 
-  describe('GET /v1/users/1/tasks', function(){
+ describe('GET /v1/users/1/tasks', function(){
+    var stub;
+
+    beforeEach(function () {
+      stub = sinon.stub(clientStub, 'list');
+
+      stub.withArgs(sinon.match({ id: '1' }))
+        .rejects({code: 500});
+      stub.withArgs(sinon.match({ userId: '1' }))
+        .resolves({payload: [stubs.task]});
+    });
+
     afterEach(function(){
-      clientStub.list.restore();
+      stub.restore();
     });
 
     it('return a collection', function(done){
-      sinon.stub(clientStub, 'list')
-        .withArgs(sinon.match({ userId: '1' }))
-        .resolves({payload: [stubs.task]});
-
       request(app)
         .get('/v1/users/1/tasks')
         .expect(200)
@@ -129,7 +136,6 @@ describe('Integration: Tasks Endpoints', function(){
         .end(done);
     });
   });
-
   describe('GET /v1/users/1/tasks/count', function(){
     afterEach(function(){
       clientStub.count.restore();
