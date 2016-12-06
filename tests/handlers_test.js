@@ -930,6 +930,14 @@ describe('Handlers Generators', function(){
       actionStub.should.have.been.calledWith(sinon.match({ userId: '1' }));
     });
 
+    it('should not call micro client with id key', function(){
+      var actionStub = sinon.stub(clientStub, 'list')
+        .resolves({payload: []});
+      req.params.id = '1';
+      target.resourceRelation(metadata.v1.user.relations[0])(req, res, next);
+      actionStub.should.not.have.been.calledWith(sinon.match({ id: '1' }));
+    });
+
     describe('when parent metadata with current user', function () {
       it('should call micro client with current user key', function(){
         var actionStub = sinon.stub(clientStub, 'list')
