@@ -28,6 +28,11 @@ describe('model', function(){
     target({ id: '1' }).should.have.property('name', null);
   });
 
+  it('should set embed relation properties', function(){
+    var actual = target({ id: '1', tasks: []});
+    actual.should.have.property('tasks');
+  });
+
   describe('links', function(){
     it('should set self link', function(){
       var actual = target({ id: '1', name: 'Peter'});
