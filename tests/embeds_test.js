@@ -43,7 +43,7 @@ describe('Unit | embeds', function() {
   });
 
   it('should return data when is null', function() {
-    var actual = target(metadata.v1.task, config, null, null);
+    var actual = target(metadata.v1.task, config, {}, null);
     expect(actual).to.eventually.be.null; // jshint ignore:line
   });
 
@@ -56,7 +56,7 @@ describe('Unit | embeds', function() {
         developerMessage: 'dev message'
       });
 
-    return target(metadata.v1.task, config, { embeds: 'user'}, taskData)
+    return target(metadata.v1.task, config, {query:{embeds: 'user'}}, taskData)
       .should.eventually.have.property('user', null);
   });
 
@@ -69,22 +69,22 @@ describe('Unit | embeds', function() {
         developerMessage: 'dev message'
       });
 
-    return target(metadata.v1.task, config, { embeds: 'user'}, taskData)
+    return target(metadata.v1.task, config, {query: { embeds: 'user'}}, taskData)
       .should.eventually.have.property('user', null);
   });
 
   it('should return data when query is null', function(){
-    target(metadata.v1.task, config, null, 'abc')
+    target(metadata.v1.task, config, {query: null}, 'abc')
       .should.eventually.be.eql('abc');
   });
 
   it('should return data when embeds is empty', function(){
-    target(metadata.v1.task, config, {}, 'abc')
+    target(metadata.v1.task, config, {query: {embeds: ''}}, 'abc')
       .should.eventually.be.eql('abc');
   });
 
   it('should return data when embeds is null', function(){
-    target(metadata.v1.task, config, {}, 'abc')
+    target(metadata.v1.task, config, {query: {embeds: null}}, 'abc')
       .should.eventually.be.eql('abc');
   });
 
@@ -97,8 +97,40 @@ describe('Unit | embeds', function() {
         developerMessage: 'dev message'
       });
 
-    return target(metadata.v1.task, config, { embeds: 'user'}, taskData)
+    return target(metadata.v1.task, config, {query:{ embeds: 'user'}}, taskData)
       .should.eventually.have.property('user', null);
+  });
+
+  describe('forwards claims when configured', function(){
+    var actionStub, req;
+    beforeEach(function(){
+      config.runtimeConfig.claims = ['userId','tenantId'];
+      actionStub = sinon.stub(serviceStub, 'batch')
+        .resolves({payload: [{id: 'u1', data: userData}] });
+      req = {
+        requestId: '1',
+        user: { userId: '1', tenantId: '1' },
+        query: {embeds: 'user'}
+      };
+    });
+
+    it('should call micro client with claims on headers', function(){
+      return target(metadata.v1.task, config, req, [taskData])
+        .then(function(){
+          actionStub.should.have.been.calledWith(
+            sinon.match.any, sinon.match({ userId: '1', tenantId: '1' })
+          );
+        });
+    });
+
+    it('should call micro client with request id on headers', function(){
+      return target(metadata.v1.task, config, req, [taskData])
+        .then(function(){
+          actionStub.should.have.been.calledWith(
+            sinon.match.any, sinon.match({ 'X-REQUEST-ID': '1' })
+          );
+        });
+    });
   });
 
   it('should embed resource in a collection', function() {
@@ -106,7 +138,7 @@ describe('Unit | embeds', function() {
       .withArgs({id: ['u1']})
       .resolves({payload: [{id: 'u1', data: userData}] });
 
-    return target(metadata.v1.task, config, { embeds: 'user'}, [taskData])
+    return target(metadata.v1.task, config, {query:{embeds: 'user'}}, [taskData])
       .should.eventually.have.deep.property('0.user');
   });
 
@@ -115,7 +147,7 @@ describe('Unit | embeds', function() {
       .withArgs({id: ['u1']})
       .resolves({payload: [{id: 'u1', data: userData}] });
 
-    return target(metadata.v1.task, config, { embeds: 'user'}, taskData)
+    return target(metadata.v1.task, config, {query:{embeds: 'user'}}, taskData)
       .should.eventually.have.property('user');
   });
 
@@ -124,7 +156,7 @@ describe('Unit | embeds', function() {
       .withArgs({userId: ['u1']})
       .resolves({payload: [{userId: 'u1', data: [taskData]}] });
 
-    return target(metadata.v1.user, config, { embeds: 'tasks'}, [userData])
+    return target(metadata.v1.user, config, {query:{ embeds: 'tasks'}}, [userData])
       .should.eventually.have.deep.property('0.tasks');
   });
 
@@ -133,7 +165,7 @@ describe('Unit | embeds', function() {
       .withArgs({userId: ['u1']})
       .resolves({payload: [{userId: 'u1', data: [taskData]}] });
 
-    return target(metadata.v1.user, config, { embeds: 'tasks'}, userData)
+    return target(metadata.v1.user, config, {query:{ embeds: 'tasks'}}, userData)
       .should.eventually.have.property('tasks');
   });
 
@@ -143,7 +175,7 @@ describe('Unit | embeds', function() {
       .withArgs({id: ['u1']})
       .resolves({payload: [{id: 'u1', data: userData}] });
 
-    return target(metadata.v1.task, config, { embeds: 'user'}, taskData)
+    return target(metadata.v1.task, config, {query:{embeds: 'user'}}, taskData)
       .should.eventually.not.have.deep.property('user.other');
   });
 
@@ -153,7 +185,7 @@ describe('Unit | embeds', function() {
       .withArgs({userId: ['u1']})
       .resolves({payload: [{userId: 'u1', data: [taskData]}]});
 
-    return target(metadata.v1.user, config, { embeds: 'tasks'}, userData)
+    return target(metadata.v1.user, config, {query:{ embeds: 'tasks'}}, userData)
       .should.eventually.not.have.deep.property('tasks.0.other');
   });
 
@@ -164,7 +196,7 @@ describe('Unit | embeds', function() {
       .withArgs({id: ['r1']})
       .resolves({payload: [{id: 'r1', data: { id: 'r1' }}] });
 
-    return target(metadata.v1.user, config, { embeds: 'tasks,role'}, userData)
+    return target(metadata.v1.user, config, {query:{ embeds: 'tasks,role'}}, userData)
       .then(function(models) {
         models.should.have.property('tasks');
         models.should.have.property('role');
