@@ -1079,7 +1079,7 @@ describe('Handlers Generators', function(){
     });
 
     describe('excluding query string parameters from payload', function(){
-      xit('should call micro client without token', function(){
+      it('should call micro client without token', function(){
         var actionStub = sinon.stub(clientStub, 'list')
           .resolves({payload: []});
         req.query.token = 'secretToken';
@@ -1087,7 +1087,7 @@ describe('Handlers Generators', function(){
         actionStub.should.have.been.calledWith({ limit: 10, offset: 0 });
       });
 
-      xit('should call micro client without excluded query string params',
+      it('should call micro client without excluded query string params',
       function(){
         config.runtimeConfig.excludeQueryString = ['other'];
         target = require('../lib/handlers')(config);
