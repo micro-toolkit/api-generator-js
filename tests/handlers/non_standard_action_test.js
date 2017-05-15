@@ -2,9 +2,9 @@ var chai = require('chai'),
     should = chai.should(),
     sinon = require("sinon"),
     sinonChai = require("sinon-chai"),
-    clientHelper = require('./support/client_helper'),
-    stubs = require('./stubs/index'),
-    Model = require('../lib/model'),
+    clientHelper = require('../support/client_helper'),
+    stubs = require('../stubs/index'),
+    Model = require('../../lib/model'),
     _ = require('lodash');
 
 chai.should();
@@ -23,7 +23,7 @@ describe('Handlers Generators', function(){
   });
 
   beforeEach(function(){
-    metadata = require('./metadata/index');
+    metadata = require('../metadata/index');
     config = {
       runtimeConfig: {
         baseUrl: 'http://test',
@@ -32,7 +32,7 @@ describe('Handlers Generators', function(){
       },
       metadata: metadata
     };
-    target = require('../lib/handlers')(config);
+    target = require('../../lib/handlers')(config);
     req = { params: {}, query: {}, body: {}, requestId: '1' };
     res = {
       status: sinon.stub(),
@@ -63,7 +63,7 @@ describe('Handlers Generators', function(){
 
       var action = metadata.v1.user.actions[1];
       target.nonStandardAction(metadata.v1.user, action)(req, res, next);
-      actionStub.should.have.been.called;
+      actionStub.should.have.been.called; // jshint ignore:line
     });
 
     it('should call micro client with id on payload', function(){
@@ -73,7 +73,7 @@ describe('Handlers Generators', function(){
 
       var action = metadata.v1.user.actions[1];
       target.nonStandardAction(metadata.v1.user, action)(req, res, next);
-      actionStub.should.have.been.called;
+      actionStub.should.have.been.called; // jshint ignore:line
     });
 
     it('should call micro client with allowed property on payload', function(){
@@ -84,7 +84,7 @@ describe('Handlers Generators', function(){
       req.body = { prop: true };
       var action = { httpVerb: 'put', name: 'action', verb: 'action', allow: ['prop'] };
       target.nonStandardAction(metadata.v1.user, action)(req, res, next);
-      actionStub.should.have.been.called;
+      actionStub.should.have.been.called; // jshint ignore:line
     });
 
     describe('enables embeded responses', function(){
@@ -92,7 +92,7 @@ describe('Handlers Generators', function(){
         if (clientStub.batch.restore) {
           clientStub.batch.restore();
         }
-      })
+      });
 
       it('should call micro client without embeds query string data', function(){
         var actionStub = sinon.stub(clientStub, 'call')
@@ -194,14 +194,14 @@ describe('Handlers Generators', function(){
 
       it('should not set content', function(){
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
-        res.json.should.not.have.been.called;
+        res.json.should.not.have.been.called; // jshint ignore:line
       });
 
       it('should send status code', function(done){
         res.sendStatus = function (status) {
           status.should.be.equal(204);
           done();
-        }
+        };
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
       });
 
@@ -220,13 +220,13 @@ describe('Handlers Generators', function(){
           .withArgs('deactivate', {id:'1'})
           .resolves({payload: stubs.user, status: 202});
         action = metadata.v1.user.actions[2];
-      })
+      });
 
       it('should return the status code it received in the response', function (done) {
         res.status = function (status) {
           status.should.be.eql(202);
           done();
-        }
+        };
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
       });
     });
@@ -236,7 +236,7 @@ describe('Handlers Generators', function(){
 
       beforeEach(function(){
         config.runtimeConfig.claims = ['userId','tenantId'];
-        target = require('../lib/handlers')(config);
+        target = require('../../lib/handlers')(config);
         req.user = { userId: '1', tenantId: '1' };
         actionStub = sinon.stub(clientStub, 'call')
           .withArgs('activate')
@@ -273,7 +273,7 @@ describe('Handlers Generators', function(){
         res.status = function(code){
           code.should.be.equal(500);
           done();
-        }
+        };
         var action = metadata.v1.user.actions[1];
         target.nonStandardAction(metadata.v1.user, action)(req, res, next);
       });
