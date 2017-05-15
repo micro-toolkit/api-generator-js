@@ -47,30 +47,32 @@ describe('Unit | embeds', function() {
     expect(actual).to.eventually.be.null; // jshint ignore:line
   });
 
-  xit('should not call batch operation when data is null', function() {
-    sinon.stub(serviceStub, 'batch')
-      .withArgs({id: ['u1']})
+  it('should not call batch operation when data is null', function() {
+    var actionStub = sinon.stub(serviceStub, 'batch')
       .rejects({
         code: 500,
         userMessage: 'user message',
         developerMessage: 'dev message'
       });
 
-    return target(metadata.v1.task, config, {query:{embeds: 'user'}}, taskData)
-      .should.eventually.have.property('user', null);
+    return target(metadata.v1.task, config, {query:{embeds: 'user'}}, null)
+      .then(function(){
+        actionStub.should.not.have.been.called;
+      });
   });
 
-  xit('should not call batch operation when data is empty array', function() {
-    sinon.stub(serviceStub, 'batch')
-      .withArgs({id: ['u1']})
+  it('should not call batch operation when data is empty array', function() {
+    var actionStub = sinon.stub(serviceStub, 'batch')
       .rejects({
         code: 500,
         userMessage: 'user message',
         developerMessage: 'dev message'
       });
 
-    return target(metadata.v1.task, config, {query: { embeds: 'user'}}, taskData)
-      .should.eventually.have.property('user', null);
+    return target(metadata.v1.task, config, {query:{embeds: 'user'}}, [])
+      .then(function(){
+        actionStub.should.not.have.been.called;
+      });
   });
 
   it('should return data when query is null', function(){
