@@ -1,5 +1,6 @@
 var chai = require('chai');
     should = chai.should();
+    _ = require('lodash');
 
 describe('paths', function(){
   var target, metadata;
@@ -111,7 +112,10 @@ describe('paths', function(){
     });
 
     it('should return a non standard action path without id', function(){
-      var action = metadata.v1.alert.actions[1];
+      var action = _.find(metadata.v1.alert.actions, function (action) {
+        return _.has(action, 'name') && action.name === 'recent';
+      });
+
       target.nonStandardAction(metadata.v1.alert, action)
         .should.be.eql('/v1/alerts/recent');
     });
