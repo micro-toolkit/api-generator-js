@@ -2,7 +2,6 @@
   "properties": [ "id", "message", "userId", "timestamp"],
   "actions": [
     "get",
-    "create",
     { "name": "recent", "httpVerb": "get", "verb": "recent", "resource": false },
     { "httpVerb": "put", "verb": "overwriteDefault" }
   ],

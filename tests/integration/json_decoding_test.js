@@ -21,10 +21,10 @@ describe('Integration: JSON Decoding', function(){
 
   after(integrationHelper.after);
 
-  describe('POST /v1/alerts', function(){
-    it('return a 400 if the JSON sent is invalid', function(done){
+  describe('When sending invalid JSON in the body', function(){
+    it('return a 400', function(done){
       request(app)
-        .post('/v1/alerts')
+        .post('/v1/tasks')
         .send('{id: "foo}')
         .set({'Content-Type': 'application/json'})
         .expect(400)
@@ -32,9 +32,9 @@ describe('Integration: JSON Decoding', function(){
         .end(done);
     });
 
-    it('return a JSON parse error developerMessage if the JSON sent is invalid', function(done){
+    it('return a JSON parse error developerMessage', function(done){
       request(app)
-        .post('/v1/alerts')
+        .post('/v1/tasks')
         .send('{id: "foo}')
         .set({'Content-Type': 'application/json'})
         .expect(function (response) {
