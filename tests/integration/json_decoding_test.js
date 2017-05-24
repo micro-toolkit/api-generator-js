@@ -9,7 +9,7 @@ var integrationHelper = require('../support/integration_helper'),
 chai.should();
 chai.use(sinonChai);
 
-describe('Integration: Alerts Payload Endpoints', function(){
+describe('Integration: JSON Decoding', function(){
   var clientStub, app;
 
   before(function(){
@@ -37,7 +37,9 @@ describe('Integration: Alerts Payload Endpoints', function(){
         .post('/v1/alerts')
         .send('{id: "foo}')
         .set({'Content-Type': 'application/json'})
-        .expect(400)
+        .expect(function (response) {
+          return response.body.developerMessage.should.eql('The JSON message sent is invalid');
+        })
         .expect('Content-Type', /json/)
         .end(done);
     });
