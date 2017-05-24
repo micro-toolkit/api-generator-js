@@ -112,7 +112,6 @@ describe('paths', function(){
 
     it('should return a non standard action path without id', function(){
       var action = metadata.v1.alert.actions[1];
-
       target.nonStandardAction(metadata.v1.alert, action)
         .should.be.eql('/v1/alerts/recent');
     });
