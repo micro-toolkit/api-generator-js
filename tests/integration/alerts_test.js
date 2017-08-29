@@ -102,7 +102,7 @@ describe('Integration: Alerts Endpoints', function(){
       clientStub.call.restore();
     });
 
-    it('return a model with different statys', function(done){
+    it('return a model with different status', function(done){
       sinon.stub(clientStub, 'call')
         .withArgs('overwritedefault', sinon.match({ id: '1' }), sinon.match.any)
         .resolves({payload: stubs.alert, status: 202});

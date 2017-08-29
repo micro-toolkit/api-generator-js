@@ -1,0 +1,11 @@
+{
+  "computeInstanceId":"1bac15021d754e68b3ddd370d9e14c3f",
+  "timestamp":"2016-03-15T09:40:00.000Z",
+  "avgCpuPerc": 3,
+  "avgDiskPerc": 2,
+  "avgMemoryPerc": 70,
+  "_links": {
+    "self": null,
+    "computeInstance": "/computeinstances/1bac15021d754e68b3ddd370d9e14c3f"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "properties": ["id", "name"],
+  "actions": ["list",
+              "get",
+              "update",
+              "remove"],
+  "relations": [
+    {"name": "metrics/live", "type": "collection", "model": "metric"},
+    {"name": "metrics", "type": "collection"}
+  ]
+}
