@@ -1,0 +1,9 @@
+{
+  "parent": "computeInstance",
+  "properties": ["computeInstanceId", "timestamp", "avgCpuPerc", "avgDiskPerc", "avgMemoryPerc"],
+  "actions": [
+    "list",
+    { "name": "live", "httpVerb": "get", "verb": "live", "resource": false }
+  ],
+  "relations":[{"name": "computeInstance", "type": "resource"}]
+}

@@ -1,14 +1,15 @@
 var express = require('express'),
     requestIdMiddleware = require('request-id/express')(),
     _ = require('lodash'),
-    routes = require('./lib/routes'),
+    modelRoutes = require('./lib/routes').modelRoutes,
+    relationsRoutes = require('./lib/routes').relationsRoutes,
     metadataLoader = require('./lib/metadata'),
     partialResponseMiddleware = require('express-partial-response'),
     Logger = require('./logger'),
     log = Logger.getLogger('micro.api.metadata');
 
-function loadingRoutes(router, modelData, config){
-  routes(config, modelData).map(function(route){
+function loadingRoutes(router, newRoutes){
+  newRoutes.map(function(route){
     log.trace('Mount route %s \t%s', route.verb.toUpperCase(), route.path);
 
     // TODO: Include this in path module instead
@@ -66,14 +67,21 @@ function apiRouter(config){
   log.info('Loaded API Models...');
 
   // loading routes
-  log.info('Loading API routes...');
+  log.info('Loading API model routes...');
   Object.keys(conf.metadata).forEach(function(version){
     var versionMetadata = conf.metadata[version];
     Object.keys(versionMetadata).forEach(function(modelName){
       var metadata = versionMetadata[modelName];
-      router = loadingRoutes(router, metadata, conf);
+      var newRoutes = modelRoutes(conf, metadata);
+      router = loadingRoutes(router, newRoutes);
+    });
+    Object.keys(versionMetadata).forEach(function(modelName){
+      var metadata = versionMetadata[modelName];
+      var newRoutes = relationsRoutes(conf, metadata);
+      router = loadingRoutes(router, newRoutes);
     });
   });
+
   log.info('Loaded API routes...');
 
   return router;
