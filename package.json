@@ -1,6 +1,6 @@
 {
   "name": "micro-toolkit-api-generators",
-  "version": "1.14.4",
+  "version": "1.14.5",
   "description": "",
   "main": "index.js",
   "scripts": {
