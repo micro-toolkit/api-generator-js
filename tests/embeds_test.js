@@ -144,6 +144,16 @@ describe('Unit | embeds', function() {
       .should.eventually.have.deep.property('0.user');
   });
 
+  it('should embed resource in a collection without null values', function() {
+    sinon.stub(serviceStub, 'batch')
+      .withArgs({id: ['u1']})
+      .resolves({payload: [{id: 'u1', data: userData}] });
+
+    var tasks = [taskData, { id: 't2', userId: null }];
+    return target(metadata.v1.task, config, {query:{embeds: 'user'}}, tasks)
+      .should.eventually.have.deep.property('1.user', null);
+  });
+
   it('should embed resource in a resource', function() {
     sinon.stub(serviceStub, 'batch')
       .withArgs({id: ['u1']})
