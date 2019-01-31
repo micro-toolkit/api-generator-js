@@ -51,7 +51,7 @@ The relations will result on the following endpoints depending on the type:
 
 ## Install
 
-    $ npm install micro-toolkit-api-generator --save
+    $ npm install micro-toolkit-api-generators --save
 
 ## Usage
 
