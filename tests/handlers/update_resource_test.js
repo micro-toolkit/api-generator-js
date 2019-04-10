@@ -107,6 +107,16 @@ describe('Handlers Generators', function(){
       target.updateResource(metadata.v1.task)(req, res, next);
     });
 
+    it('should return response status code', function(done){
+      sinon.stub(clientStub, 'update')
+        .resolves({payload: null, status: 204});
+      res.status = function (status) {
+        status.should.be.equal(204);
+        done();
+      };
+      target.updateResource(metadata.v1.task)(req, res, next);
+    });
+
     it('should execute next handler', function(done){
       var model = Model(config, metadata.v1.task)(task);
       sinon.stub(clientStub, 'update').resolves({payload: task});
