@@ -17,7 +17,7 @@
     "lodash-inflection": "^1.4.0",
     "logger-facade-nodejs": "2.0.0",
     "request-id": "^0.11.0",
-    "zmq-service-suite-client": "^1.0.0"
+    "zmq-service-suite-client": "^1.0.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
